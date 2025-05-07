@@ -1,16 +1,18 @@
 <template>
   <header class="bg-white shadow-sm">
-    <div class="px-4 py-4 flex items-center justify-between">
-      <h1 class="text-2xl font-bold text-gray-800">Safe Reader</h1>
+    <div class="px-4 gap-4 py-4 flex items-center justify-between max-w-full">
+      <h1 class="md:text-2xl font-bold text-gray-800 text-nowrap">
+        Safe Reader
+      </h1>
 
       <!-- URL Input Form -->
-      <form @submit.prevent="loadUrl" class="flex-1 max-w-3xl ml-8">
+      <form @submit.prevent="loadUrl" class="w-full">
         <div class="flex gap-4">
           <input
             v-model="modelValue"
             type="url"
             placeholder="Enter URL to view"
-            class="flex-1 px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
             required
           />
           <button

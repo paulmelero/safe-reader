@@ -76,13 +76,28 @@ const loadUrl = async () => {
   }
 };
 
-// Handle shared URLs
+// Handle URL params (for both navigation and PWA share target)
 onMounted(() => {
   const url = new URL(window.location.href);
+  // Check for params from share target API (url, title, text)
   const sharedUrl = url.searchParams.get("url");
+  const sharedText = url.searchParams.get("text");
+
+  // Priority: 1. url parameter, 2. text parameter that contains a URL
+  let urlToLoad = null;
 
   if (sharedUrl && isValidUrl(sharedUrl)) {
-    urlInput.value = sharedUrl;
+    urlToLoad = sharedUrl;
+  } else if (sharedText) {
+    // Check if the text contains a URL
+    const urlMatch = sharedText.match(/(https?:\/\/[^\s]+)/);
+    if (urlMatch && isValidUrl(urlMatch[0])) {
+      urlToLoad = urlMatch[0];
+    }
+  }
+
+  if (urlToLoad) {
+    urlInput.value = urlToLoad;
     loadUrl();
   }
 });

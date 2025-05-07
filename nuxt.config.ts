@@ -10,15 +10,18 @@ export default defineNuxtConfig({
   },
 
   pwa: {
+    registerType: "autoUpdate",
     manifest: {
       name: "Safe Reader",
       short_name: "Safe Reader",
       description:
         "A secure way to view shared URLs (in a sandboxed iframe with no JS).",
       theme_color: "#ffffff",
+      background_color: "#ffffff",
+      display: "standalone",
       icons: [
         {
-          src: "/safereader-192x192.png",
+          src: "safereader-192x192.png", // Removed leading slash for relative path
           sizes: "192x192",
           type: "image/png",
         },
@@ -26,6 +29,7 @@ export default defineNuxtConfig({
       share_target: {
         action: "/",
         method: "GET",
+        enctype: "application/x-www-form-urlencoded",
         params: {
           title: "title",
           text: "text",
@@ -36,6 +40,10 @@ export default defineNuxtConfig({
     workbox: {
       navigateFallback: "/",
       globPatterns: ["**/*.{js,css,html,png,svg,ico}"],
+    },
+    devOptions: {
+      enabled: true,
+      type: "module",
     },
   },
 });
