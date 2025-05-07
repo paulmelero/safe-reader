@@ -17,7 +17,7 @@
       <!-- URL Display -->
       <div
         v-if="currentUrl"
-        class="bg-white rounded-lg shadow-lg overflow-hidden h-full grow"
+        class="bg-white rounded-lg shadow-lg overflow-hidden h-full grow flex flex-col justify-between"
       >
         <div class="p-4 bg-gray-50 border-b grid grid-cols-[1fr,auto] gap-4">
           <p class="text-gray-600 min-w-max">Currently viewing:</p>
@@ -26,15 +26,14 @@
             >{{ currentUrl }}</output
           >
         </div>
-        <div class="w-full h-">
+        <div class="w-full h-full grow flex flex-col justify-between">
           <iframe
             :key="currentUrl"
             :src="currentUrl"
-            class="w-full h-full"
+            class="w-full h-full grow"
             sandbox="allow-same-origin allow-forms"
             referrerpolicy="no-referrer"
             loading="lazy"
-            @load="handleIframeLoad"
           ></iframe>
         </div>
       </div>
@@ -43,12 +42,8 @@
 </template>
 
 <script setup>
-const urlInput = ref(
-  "https://www.eldiario.es/comunitat-valenciana/informe-residencia-paiporta-hubo-seis-muertos-dana-desvela-avisos-erroneos-generalitat_1_12271919.html"
-);
-const currentUrl = ref(
-  "https://www.eldiario.es/comunitat-valenciana/informe-residencia-paiporta-hubo-seis-muertos-dana-desvela-avisos-erroneos-generalitat_1_12271919.html"
-);
+const urlInput = ref("");
+const currentUrl = ref("https://graficos.net");
 const loading = ref(false);
 const error = ref("");
 
