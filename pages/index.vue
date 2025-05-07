@@ -43,7 +43,7 @@
 
 <script setup>
 const urlInput = ref("");
-const currentUrl = ref("https://graficos.net");
+const currentUrl = ref("");
 const loading = ref(false);
 const error = ref("");
 
