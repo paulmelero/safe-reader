@@ -18,7 +18,7 @@ export default defineNuxtConfig({
       theme_color: "#ffffff",
       icons: [
         {
-          src: "pwa-192x192.png",
+          src: "/safereader-192x192.png",
           sizes: "192x192",
           type: "image/png",
         },
