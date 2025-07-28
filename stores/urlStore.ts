@@ -6,6 +6,7 @@ export const useUrlStore = defineStore("urlStore", () => {
   const title = ref("");
 
   const { $t } = useI18n();
+  const router = useRouter();
 
   const isValidUrl = (url: string) => {
     try {
@@ -28,6 +29,7 @@ export const useUrlStore = defineStore("urlStore", () => {
     loading.value = true;
     try {
       currentUrl.value = urlInput.value;
+      router.replace({ query: { url: currentUrl.value } });
     } catch (e) {
       title.value = "";
       error.value = $t("errorFailedUrl") as string;

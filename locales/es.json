@@ -1,6 +1,7 @@
 {
   "readingTitle": "Leyendo: {hostname}",
   "loadButton": "Cargar",
+  "shareButton": "Compartir",
   "inputPlaceholder": "Ingrese la URL para leer",
   "footerCopy": "© {year} SAFEReader. Todos los derechos reservados.",
   "langEnglish": "Inglés",
