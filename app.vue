@@ -1,13 +1,14 @@
 <template>
-  <div>
+  <NuxtLayout>
     <NuxtPwaManifest />
     <NuxtPage />
-  </div>
+  </NuxtLayout>
 </template>
 
 <script setup lang="ts">
 useHead({
-  title: "Safe Reader",
+  title: "SAFEReader",
+  titleTemplate: "%s - SAFEReader",
   meta: [
     {
       name: "description",

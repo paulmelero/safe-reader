@@ -2,14 +2,14 @@
   <header class="bg-white shadow-sm">
     <div class="px-4 gap-4 py-4 flex items-center justify-between max-w-full">
       <h1 class="md:text-2xl font-bold text-gray-800 text-nowrap">
-        Safe Reader
+        <span class="text-blue-500">[SAFE]</span> Reader
       </h1>
 
       <!-- URL Input Form -->
-      <form @submit.prevent="loadUrl" class="w-full">
+      <form @submit.prevent="urlStore.loadUrl" class="w-full">
         <div class="flex gap-4">
           <input
-            v-model="modelValue"
+            v-model="urlInput"
             type="url"
             placeholder="Enter URL to view"
             class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -28,15 +28,8 @@
 </template>
 
 <script setup lang="ts">
-const modelValue = defineModel<string>();
+import { useUrlStore } from "~/stores/urlStore";
 
-const emit = defineEmits<{
-  (e: "load", url: string): void;
-}>();
-
-const loadUrl = () => {
-  if (modelValue.value) {
-    emit("load", modelValue.value);
-  }
-};
+const urlStore = useUrlStore();
+const { urlInput } = storeToRefs(urlStore);
 </script>

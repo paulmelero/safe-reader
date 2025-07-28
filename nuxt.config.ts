@@ -1,8 +1,8 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   compatibilityDate: "2024-04-03",
-  devtools: { enabled: false },
-  modules: ["@vite-pwa/nuxt", "@nuxtjs/tailwindcss"],
+  devtools: { enabled: true },
+  modules: ["@vite-pwa/nuxt", "@nuxtjs/tailwindcss", "@pinia/nuxt"],
 
   // GitHub Pages deployment configuration
   app: {
