@@ -11,7 +11,7 @@
           <input
             v-model="urlInput"
             type="url"
-            placeholder="Enter URL to view"
+            :placeholder="$t('inputPlaceholder')"
             class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
             required
           />
@@ -19,7 +19,7 @@
             type="submit"
             class="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
-            Load
+            {{ $t("loadButton") }}
           </button>
         </div>
       </form>
@@ -32,4 +32,6 @@ import { useUrlStore } from "~/stores/urlStore";
 
 const urlStore = useUrlStore();
 const { urlInput } = storeToRefs(urlStore);
+
+const { $t } = useI18n();
 </script>

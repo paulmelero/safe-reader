@@ -1,0 +1,11 @@
+{
+  "readingTitle": "Leyendo: {hostname}",
+  "loadButton": "Cargar",
+  "inputPlaceholder": "Ingrese la URL para leer",
+  "footerCopy": "© {year} SAFEReader. Todos los derechos reservados.",
+  "langEnglish": "Inglés",
+  "langSpanish": "Español",
+  "navHome": "Inicio",
+  "navAbout": "Acerca de",
+  "navTerms": "Términos"
+}

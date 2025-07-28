@@ -5,6 +5,8 @@ export const useUrlStore = defineStore("urlStore", () => {
   const error = ref("");
   const title = ref("");
 
+  const { $t } = useI18n();
+
   const isValidUrl = (url: string) => {
     try {
       new URL(url);
@@ -18,17 +20,17 @@ export const useUrlStore = defineStore("urlStore", () => {
     error.value = "";
 
     if (!urlInput || !isValidUrl(urlInput.value)) {
-      error.value = "Please enter a valid URL";
+      error.value = $t("errorInvalidUrl") as string;
       return;
     }
     const hostname = new URL(urlInput.value).hostname;
-    title.value = `Reading: ${hostname}`;
+    title.value = $t("readingTitle", { hostname }) as string;
     loading.value = true;
     try {
       currentUrl.value = urlInput.value;
     } catch (e) {
       title.value = "";
-      error.value = "Failed to load URL";
+      error.value = $t("errorFailedUrl") as string;
     } finally {
       loading.value = false;
     }

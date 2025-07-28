@@ -2,7 +2,12 @@
 export default defineNuxtConfig({
   compatibilityDate: "2024-04-03",
   devtools: { enabled: true },
-  modules: ["@vite-pwa/nuxt", "@nuxtjs/tailwindcss", "@pinia/nuxt"],
+  modules: [
+    "@vite-pwa/nuxt",
+    "@nuxtjs/tailwindcss",
+    "@pinia/nuxt",
+    "nuxt-i18n-micro",
+  ],
 
   // GitHub Pages deployment configuration
   app: {
@@ -31,7 +36,6 @@ export default defineNuxtConfig({
         method: "GET",
         enctype: "application/x-www-form-urlencoded",
         params: {
-          title: "title",
           text: "text",
           url: "url",
         },
@@ -45,5 +49,13 @@ export default defineNuxtConfig({
       enabled: true,
       type: "module",
     },
+  },
+
+  i18n: {
+    locales: [
+      { code: "en", name: "English", iso: "en-US" },
+      { code: "es", name: "Español", iso: "es-ES" },
+    ],
+    defaultLocale: "es",
   },
 });

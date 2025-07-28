@@ -6,6 +6,8 @@
 </template>
 
 <script setup lang="ts">
+const { $getLocale } = useI18n();
+
 useHead({
   title: "SAFEReader",
   titleTemplate: "%s - SAFEReader",
@@ -13,7 +15,9 @@ useHead({
     {
       name: "description",
       content:
-        "A secure way to view shared URLs (in a sandboxed iframe with no JS).",
+        $getLocale() === "en"
+          ? "A secure way to view shared URLs (in a sandboxed iframe with no JS)."
+          : "Una forma segura de ver URLs compartidas (en un iframe aislado sin JavaScript).",
     },
     { name: "theme-color", content: "#ffffff" },
     { name: "apple-mobile-web-app-capable", content: "yes" },
