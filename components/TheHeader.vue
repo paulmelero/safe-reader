@@ -22,7 +22,7 @@
             >
               {{ $t("loadButton") }}
             </button>
-            <button
+            <!-- <button
               type="button"
               @click="shareUrl"
               :disabled="!isShareSupported"
@@ -32,7 +32,7 @@
               }"
             >
               {{ $t("shareButton") }}
-            </button>
+            </button> -->
           </div>
         </form>
       </search>
@@ -44,22 +44,22 @@
 import { useUrlStore } from "~/stores/urlStore";
 
 const urlStore = useUrlStore();
-const { urlInput, currentUrl } = storeToRefs(urlStore);
+const { urlInput } = storeToRefs(urlStore);
 
 const { $t } = useI18n();
 
-const isShareSupported = computed(() => {
-  return window && navigator && "share" in navigator;
-});
+// const isShareSupported = computed(() => {
+//   return window && navigator && "share" in navigator;
+// });
 
-const shareUrl = () => {
-  if (currentUrl.value && isShareSupported.value) {
-    const shareData = {
-      url: currentUrl.value,
-    };
-    navigator.share(shareData).catch((error) => {
-      console.error("Error sharing:", error);
-    });
-  }
-};
+// const shareUrl = () => {
+//   if (currentUrl.value && isShareSupported.value) {
+//     const shareData = {
+//       url: currentUrl.value,
+//     };
+//     navigator.share(shareData).catch((error) => {
+//       console.error("Error sharing:", error);
+//     });
+//   }
+// };
 </script>
