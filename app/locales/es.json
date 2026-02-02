@@ -3,6 +3,8 @@
   "loadButton": "Cargar",
   "shareButton": "Compartir",
   "inputPlaceholder": "Ingrese la URL para leer",
+  "heroTitle": "Lee enlaces compartidos con seguridad",
+  "heroSubtitle": "Pega cualquier URL para abrirla en un marco aislado (sin JavaScript).",
   "footerCopy": "{year} – SAFEReader",
   "langEnglish": "Inglés",
   "langSpanish": "Español",

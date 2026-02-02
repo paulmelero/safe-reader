@@ -1,6 +1,6 @@
 <template>
   <main
-    class="px-2 pb-4 pt-2 md:px-4 md:pb-8 md:pt-4 grow flex flex-col justify-between relative z-[0]"
+    class="px-2 pb-4 pt-2 md:px-4 md:pb-8 md:pt-4 grow flex flex-col gap-6 relative z-[0]"
     :class="{
       [successBackground]: currentUrl && !loading && !error,
     }"
@@ -15,12 +15,29 @@
       {{ $t("loading") }}
     </div>
 
-    <!-- URL Output -->
     <div
-      v-if="currentUrl"
-      class="bg-white rounded-lg shadow-lg overflow-hidden h-full grow flex flex-col justify-between"
+      v-if="!currentUrl"
+      class="grow flex flex-col items-center justify-center text-center"
     >
-      <div class="w-full h-full grow flex flex-col justify-between">
+      <div class="w-full max-w-2xl mx-auto space-y-6">
+        <h2 class="text-xl md:text-2xl font-semibold text-gray-700">
+          {{ $t("heroTitle") }}
+        </h2>
+        <p class="text-gray-500">
+          {{ $t("heroSubtitle") }}
+        </p>
+        <div class="w-full" style="view-transition-name: search-form">
+          <SearchForm />
+        </div>
+      </div>
+    </div>
+
+    <!-- URL Output -->
+    <div class="grow flex flex-col">
+      <div
+        v-if="currentUrl"
+        class="bg-white rounded-lg shadow-lg overflow-hidden h-full grow flex flex-col"
+      >
         <iframe
           :key="currentUrl"
           :src="currentUrl"
@@ -36,15 +53,15 @@
 </template>
 
 <script setup>
-import { useUrlStore } from "~/stores/urlStore";
+import { useUrlReader } from "~/composables/useUrlReader";
 definePageMeta({
   title: "IndexPage",
 });
 
 const { $t, $getLocale } = useI18n();
 
-const urlStore = useUrlStore();
-const { currentUrl, loading, error, title } = storeToRefs(urlStore);
+const { currentUrl, loading, error, title, hydrateFromLocation } =
+  useUrlReader();
 
 useHead({
   title: () => title.value || "",
@@ -58,6 +75,6 @@ const successBackground =
 
 // Handle URL params (for both navigation and PWA share target)
 onMounted(() => {
-  urlStore.get(window.location.href);
+  hydrateFromLocation(window.location.href);
 });
 </script>

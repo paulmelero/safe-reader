@@ -5,6 +5,7 @@
     <slot />
 
     <TheFooter />
+    <ShareButton />
   </div>
 </template>
 

@@ -7,12 +7,11 @@ export default defineNuxtConfig({
     port: 3033,
   },
 
-  modules: [
-    "@vite-pwa/nuxt",
-    "@nuxtjs/tailwindcss",
-    "@pinia/nuxt",
-    "nuxt-i18n-micro",
-  ],
+  features: {
+    inlineStyles: true,
+  },
+
+  modules: ["@vite-pwa/nuxt", "@nuxtjs/tailwindcss", "nuxt-i18n-micro"],
 
   // GitHub Pages deployment configuration
   app: {

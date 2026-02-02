@@ -3,6 +3,8 @@
   "loadButton": "Load",
   "shareButton": "Share",
   "inputPlaceholder": "Enter URL to read",
+  "heroTitle": "Read shared links safely",
+  "heroSubtitle": "Paste any URL to load it inside a sandboxed frame (no JavaScript).",
   "footerCopy": "{year} – SAFEReader",
   "langEnglish": "English",
   "langSpanish": "Spanish",
