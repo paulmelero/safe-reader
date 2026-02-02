@@ -1,7 +1,7 @@
 <template>
   <header class="bg-white shadow-sm">
     <div class="px-4 gap-4 py-4 flex items-center justify-between max-w-full">
-      <NuxtLink to="/" @click.native="resetState">
+      <NuxtLink :to="localePath('/')" @click.native="resetState">
         <h1
           class="hidden md:block md:text-2xl font-bold text-gray-800 text-nowrap"
         >
@@ -33,6 +33,9 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import { useUrlReader } from "~/composables/useUrlReader";
+
+const { $localePath } = useNuxtApp();
+const localePath = $localePath;
 
 const { currentUrl, resetState } = useUrlReader();
 
