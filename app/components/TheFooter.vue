@@ -5,10 +5,10 @@
         {{ $t("footerCopy", { year: new Date().getFullYear() }) }}
       </p>
     </div>
-    <!-- <nav>
+    <nav>
       <ul class="flex space-x-4">
         <li>
-          <NuxtLink to="/">{{ $t("navHome") }}</NuxtLink>
+          <NuxtLink to="/blog">Blog</NuxtLink>
         </li>
         <li>
           <NuxtLink to="/about">{{ $t("navAbout") }}</NuxtLink>
@@ -17,7 +17,7 @@
           <NuxtLink to="/terms">{{ $t("navTerms") }}</NuxtLink>
         </li>
       </ul>
-    </nav> -->
+    </nav>
     <LocaleSwitcher />
   </footer>
 </template>

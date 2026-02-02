@@ -11,7 +11,12 @@ export default defineNuxtConfig({
     inlineStyles: true,
   },
 
-  modules: ["@vite-pwa/nuxt", "@nuxtjs/tailwindcss", "nuxt-i18n-micro"],
+  modules: [
+    "@vite-pwa/nuxt",
+    "@nuxtjs/tailwindcss",
+    "@nuxt/content",
+    "nuxt-i18n-micro",
+  ],
 
   // GitHub Pages deployment configuration
   app: {
