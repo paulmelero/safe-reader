@@ -33,17 +33,23 @@ export default defineNuxtConfig({
       theme_color: "#ffffff",
       background_color: "#ffffff",
       display: "standalone",
+      start_url: process.env.NODE_ENV === "production" ? "/safe-reader/" : "/",
       icons: [
         {
           src: "safereader-192x192.png", // Removed leading slash for relative path
           sizes: "192x192",
           type: "image/png",
         },
+        {
+          src: "safereader-512x512.jpg",
+          sizes: "512x512",
+          type: "image/jpeg",
+        },
       ],
       share_target: {
         action: "/",
-        method: "GET",
         enctype: "application/x-www-form-urlencoded",
+        method: "GET",
         params: {
           text: "text",
           url: "url",
