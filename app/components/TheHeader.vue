@@ -6,7 +6,7 @@
       </h1>
 
       <!-- URL Input Form -->
-      <search class="w-full">
+      <div class="w-full" role="search">
         <form @submit.prevent="urlStore.loadUrl">
           <div class="flex gap-4">
             <input
@@ -35,7 +35,7 @@
             </button> -->
           </div>
         </form>
-      </search>
+      </div>
     </div>
   </header>
 </template>

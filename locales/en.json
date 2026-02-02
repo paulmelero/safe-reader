@@ -1,12 +1,1 @@
-{
-  "readingTitle": "Reading: {hostname}",
-  "loadButton": "Load",
-  "shareButton": "Share",
-  "inputPlaceholder": "Enter URL to read",
-  "footerCopy": "© {year} SAFEReader. All rights reserved.",
-  "langEnglish": "English",
-  "langSpanish": "Spanish",
-  "navHome": "Home",
-  "navAbout": "About",
-  "navTerms": "Terms"
-}
+{}

@@ -2,6 +2,11 @@
 export default defineNuxtConfig({
   compatibilityDate: "2024-04-03",
   devtools: { enabled: true },
+
+  devServer: {
+    port: 3033,
+  },
+
   modules: [
     "@vite-pwa/nuxt",
     "@nuxtjs/tailwindcss",
@@ -57,5 +62,6 @@ export default defineNuxtConfig({
       { code: "es", name: "Español", iso: "es-ES" },
     ],
     defaultLocale: "es",
+    translationDir: "app/locales",
   },
 });

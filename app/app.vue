@@ -7,15 +7,17 @@
 
 <script setup lang="ts">
 const { $getLocale } = useI18n();
+const locale = $getLocale();
 
 useHead({
   title: "SAFEReader",
-  titleTemplate: "%s - SAFEReader",
+  titleTemplate: (title?: string) =>
+    title ? `${title} – SAFEReader` : "SAFEReader",
   meta: [
     {
       name: "description",
       content:
-        $getLocale() === "en"
+        locale === "en"
           ? "A secure way to view shared URLs (in a sandboxed iframe with no JS)."
           : "Una forma segura de ver URLs compartidas (en un iframe aislado sin JavaScript).",
     },
