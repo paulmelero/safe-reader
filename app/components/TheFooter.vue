@@ -8,13 +8,16 @@
     <nav>
       <ul class="flex space-x-4">
         <li>
-          <NuxtLink to="/blog">Blog</NuxtLink>
+          <NuxtLink :to="localePath('/')">Home</NuxtLink>
         </li>
         <li>
-          <NuxtLink to="/about">{{ $t("navAbout") }}</NuxtLink>
+          <NuxtLink :to="localePath('/blog')">Blog</NuxtLink>
         </li>
         <li>
-          <NuxtLink to="/terms">{{ $t("navTerms") }}</NuxtLink>
+          <NuxtLink :to="localePath('/about')">{{ $t("navAbout") }}</NuxtLink>
+        </li>
+        <li>
+          <NuxtLink :to="localePath('/terms')">{{ $t("navTerms") }}</NuxtLink>
         </li>
       </ul>
     </nav>
@@ -24,4 +27,6 @@
 
 <script setup lang="ts">
 const { $t } = useI18n();
+const { $localePath } = useNuxtApp();
+const localePath = $localePath;
 </script>

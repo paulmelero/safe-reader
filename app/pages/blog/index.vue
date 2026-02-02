@@ -41,6 +41,7 @@
 import { computed } from "vue";
 
 const { $t, $getLocale } = useI18n();
+const { $localePath } = useNuxtApp();
 
 const pageTitle = computed(() => $t("blog.title", "Blog"));
 const pageSubtitle = computed(() =>
@@ -82,7 +83,7 @@ const postEntries = computed(() =>
     return {
       ...post,
       slug,
-      href: `/blog/${slug}`,
+      href: $localePath(`/blog/${slug}`),
       formattedDate,
     };
   }),

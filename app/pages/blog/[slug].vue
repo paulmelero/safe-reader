@@ -28,7 +28,7 @@
     class="flex flex-col items-center gap-4 text-center text-gray-600"
   >
     <p>{{ notFoundMessage }}</p>
-    <NuxtLink to="/blog" class="text-blue-600 hover:underline">
+    <NuxtLink :to="localePath('/blog')" class="text-blue-600 hover:underline">
       {{ backToBlogLabel }}
     </NuxtLink>
   </div>
@@ -44,6 +44,8 @@ definePageMeta({
 
 const route = useRoute();
 const { $getLocale, $t } = useI18n();
+const { $localePath } = useNuxtApp();
+const localePath = $localePath;
 
 const locale = computed(() => $getLocale());
 const slug = computed(() => String(route.params.slug || ""));
