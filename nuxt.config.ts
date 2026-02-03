@@ -34,6 +34,7 @@ export default defineNuxtConfig({
       background_color: "#ffffff",
       display: "standalone",
       start_url: process.env.NODE_ENV === "production" ? "/safe-reader/" : "/",
+      scope: process.env.NODE_ENV === "production" ? "/safe-reader/" : "/",
       icons: [
         {
           src: "safereader-192x192.png", // Removed leading slash for relative path
@@ -47,7 +48,7 @@ export default defineNuxtConfig({
         },
       ],
       share_target: {
-        action: "/",
+        action: process.env.NODE_ENV === "production" ? "/safe-reader/" : "/",
         enctype: "application/x-www-form-urlencoded",
         method: "GET",
         params: {
