@@ -1,6 +1,8 @@
+import { fileURLToPath } from 'node:url';
+
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  compatibilityDate: "2024-04-03",
+  compatibilityDate: '2024-04-03',
   devtools: { enabled: true },
 
   devServer: {
@@ -11,68 +13,99 @@ export default defineNuxtConfig({
     inlineStyles: true,
   },
 
+  nitro: {
+    preset: 'cloudflare-module',
+    alias: {
+      canvas: fileURLToPath(
+        new URL('./server/mocks/canvas.ts', import.meta.url),
+      ),
+      __STATIC_CONTENT_MANIFEST: fileURLToPath(
+        new URL('./server/mocks/manifest.ts', import.meta.url),
+      ),
+    },
+    cloudflare: {
+      deployConfig: true,
+      nodeCompat: true,
+    },
+    serveStatic: false,
+  },
+
+  runtimeConfig: {
+    public: {
+      APP_NAME: 'SAFEReader',
+      APP_URL: 'https://paulmelero.github.io/safe-reader',
+    },
+  },
+
   modules: [
-    "@vite-pwa/nuxt",
-    "@nuxtjs/tailwindcss",
-    "@nuxt/content",
-    "nuxt-i18n-micro",
+    '@vite-pwa/nuxt',
+    '@nuxtjs/tailwindcss',
+    '@nuxt/content',
+    'nuxt-i18n-micro',
   ],
 
   // GitHub Pages deployment configuration
   app: {
-    baseURL: process.env.GITHUB_ACTIONS ? "/safe-reader/" : "/",
+    baseURL: process.env.GITHUB_ACTIONS ? '/safe-reader/' : '/',
   },
 
   pwa: {
-    registerType: "autoUpdate",
+    registerType: 'autoUpdate',
     manifest: {
-      name: "Safe Reader",
-      short_name: "Safe Reader",
+      name: 'Safe Reader',
+      short_name: 'Safe Reader',
       description:
-        "A secure way to view shared URLs (in a sandboxed iframe with no JS).",
-      theme_color: "#ffffff",
-      background_color: "#ffffff",
-      display: "standalone",
-      start_url: process.env.NODE_ENV === "production" ? "/safe-reader/" : "/",
-      scope: process.env.NODE_ENV === "production" ? "/safe-reader/" : "/",
+        'A secure way to view shared URLs (in a sandboxed iframe with no JS).',
+      theme_color: '#ffffff',
+      background_color: '#ffffff',
+      display: 'standalone',
+      start_url: process.env.NODE_ENV === 'production' ? '/safe-reader/' : '/',
+      scope: process.env.NODE_ENV === 'production' ? '/safe-reader/' : '/',
       icons: [
         {
-          src: "safereader-192x192.png", // Removed leading slash for relative path
-          sizes: "192x192",
-          type: "image/png",
+          src: 'safereader-192x192.png', // Removed leading slash for relative path
+          sizes: '192x192',
+          type: 'image/png',
         },
         {
-          src: "safereader-512x512.jpg",
-          sizes: "512x512",
-          type: "image/jpeg",
+          src: 'safereader-512x512.jpg',
+          sizes: '512x512',
+          type: 'image/jpeg',
         },
       ],
       share_target: {
-        action: process.env.NODE_ENV === "production" ? "/safe-reader/" : "/",
-        enctype: "application/x-www-form-urlencoded",
-        method: "GET",
+        action: process.env.NODE_ENV === 'production' ? '/safe-reader/' : '/',
+        enctype: 'application/x-www-form-urlencoded',
+        method: 'GET',
         params: {
-          text: "text",
-          url: "url",
+          text: 'text',
+          url: 'url',
         },
       },
     },
     workbox: {
-      navigateFallback: "/",
-      globPatterns: ["**/*.{js,css,html,png,svg,ico}"],
+      navigateFallback: '/',
+      globPatterns: ['**/*.{js,css,html,png,svg,ico}'],
     },
     devOptions: {
       enabled: true,
-      type: "module",
+      type: 'module',
     },
   },
 
   i18n: {
     locales: [
-      { code: "en", name: "English", iso: "en-US" },
-      { code: "es", name: "Español", iso: "es-ES" },
+      { code: 'en', name: 'English', iso: 'en-US' },
+      { code: 'es', name: 'Español', iso: 'es-ES' },
     ],
-    defaultLocale: "es",
-    translationDir: "app/locales",
+    defaultLocale: 'es',
+    translationDir: 'app/locales',
+  },
+
+  content: {
+    database: {
+      bindingName: 'D1',
+      type: 'd1',
+    },
   },
 });

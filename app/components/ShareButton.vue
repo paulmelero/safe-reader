@@ -6,7 +6,7 @@
     :aria-label="$t('shareButton')"
     @click="shareUrl"
   >
-    <span class="sr-only">{{ $t("shareButton") }}</span>
+    <span class="sr-only">{{ $t('shareButton') }}</span>
     <svg
       aria-hidden="true"
       class="h-6 w-6"
@@ -22,8 +22,8 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref } from "vue";
-import { useUrlReader } from "~/composables/useUrlReader";
+import { computed, onMounted, ref } from 'vue';
+import { useUrlReader } from '~/composables/useUrlReader';
 
 const { $t } = useI18n();
 const { currentUrl, title } = useUrlReader();
@@ -31,7 +31,21 @@ const isShareSupported = ref(false);
 
 onMounted(() => {
   isShareSupported.value =
-    typeof navigator !== "undefined" && typeof navigator.share === "function";
+    typeof navigator !== 'undefined' && typeof navigator.share === 'function';
+});
+
+const config = useRuntimeConfig();
+
+const shareLink = computed(() => {
+  try {
+    const baseUrl = config.public.APP_URL;
+    if (!baseUrl || !currentUrl.value) return '';
+    const url = new URL(baseUrl);
+    url.searchParams.set('url', currentUrl.value);
+    return url.toString();
+  } catch (e) {
+    return currentUrl.value;
+  }
 });
 
 const canShare = computed(
@@ -41,29 +55,29 @@ const canShare = computed(
 const shareUrl = async () => {
   if (
     !canShare.value ||
-    typeof navigator === "undefined" ||
-    typeof navigator.share !== "function"
+    typeof navigator === 'undefined' ||
+    typeof navigator.share !== 'function'
   ) {
     return;
   }
 
   try {
     await navigator.share({
-      url: currentUrl.value,
+      url: shareLink.value,
       title: title.value || currentUrl.value,
       text: title.value || currentUrl.value,
     });
   } catch (error) {
     if (
       error &&
-      typeof error === "object" &&
-      "name" in error &&
-      (error as { name?: string }).name === "AbortError"
+      typeof error === 'object' &&
+      'name' in error &&
+      (error as { name?: string }).name === 'AbortError'
     ) {
       return;
     }
 
-    console.error("Error sharing", error);
+    console.error('Error sharing', error);
   }
 };
 </script>

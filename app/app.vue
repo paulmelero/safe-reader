@@ -9,26 +9,28 @@
 const { $getLocale } = useI18n();
 const locale = $getLocale();
 
+const { APP_NAME } = useRuntimeConfig().public;
+
 useHead({
-  title: "SAFEReader",
+  title: APP_NAME,
   titleTemplate: (title?: string) =>
-    title ? `${title} – SAFEReader` : "SAFEReader",
+    title ? `${title} – ${APP_NAME}` : APP_NAME,
   meta: [
     {
-      name: "description",
+      name: 'description',
       content:
-        locale === "en"
-          ? "A secure way to view shared URLs (in a sandboxed iframe with no JS)."
-          : "Una forma segura de ver URLs compartidas (en un iframe aislado sin JavaScript).",
+        locale === 'en'
+          ? 'A secure way to view shared URLs (in a sandboxed iframe with no JS).'
+          : 'Una forma segura de ver URLs compartidas (en un iframe aislado sin JavaScript).',
     },
-    { name: "theme-color", content: "#ffffff" },
-    { name: "apple-mobile-web-app-capable", content: "yes" },
-    { name: "apple-mobile-web-app-status-bar-style", content: "default" },
+    { name: 'theme-color', content: '#ffffff' },
+    { name: 'apple-mobile-web-app-capable', content: 'yes' },
+    { name: 'apple-mobile-web-app-status-bar-style', content: 'default' },
   ],
   link: [
     {
-      rel: "apple-touch-icon",
-      href: "/safereader-192x192.png",
+      rel: 'apple-touch-icon',
+      href: '/safereader-192x192.png',
     },
   ],
 });
