@@ -1,14 +1,13 @@
-import type { Config } from "tailwindcss";
-import colors from "tailwindcss/colors";
+import type { Config } from 'tailwindcss';
 
 export default {
   theme: {
     extend: {
       colors: {
-        primary: colors.blue["500"],
-        primaryHover: colors.blue["600"],
+        primary: '#3b82f6', // blue-500
+        primaryHover: '#2563eb', // blue-600
       },
     },
   },
-  plugins: [require("@tailwindcss/typography")],
+  plugins: [require('@tailwindcss/typography')],
 } satisfies Config;

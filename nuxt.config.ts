@@ -14,13 +14,10 @@ export default defineNuxtConfig({
   },
 
   nitro: {
-    preset: 'cloudflare-module',
+    preset: 'cloudflare_module',
     alias: {
       canvas: fileURLToPath(
         new URL('./server/mocks/canvas.ts', import.meta.url),
-      ),
-      __STATIC_CONTENT_MANIFEST: fileURLToPath(
-        new URL('./server/mocks/manifest.ts', import.meta.url),
       ),
     },
     cloudflare: {
