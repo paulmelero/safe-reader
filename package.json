@@ -3,7 +3,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "nuxt build && sed -i '' 's/import\"__STATIC_CONTENT_MANIFEST\";//' .output/server/index.mjs",
+    "build": "nuxt build && node scripts/postbuild.mjs",
     "dev": "nuxt dev",
     "preview": "pnpm dlx wrangler dev",
     "postinstall": "nuxt prepare"
