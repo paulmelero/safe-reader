@@ -38,7 +38,7 @@ const config = useRuntimeConfig();
 
 const shareLink = computed(() => {
   try {
-    const baseUrl = config.public.APP_URL;
+    const baseUrl = config.public.APP_URL || window.location.origin;
     if (!baseUrl || !currentUrl.value) return '';
     const url = new URL(baseUrl);
     url.searchParams.set('url', currentUrl.value);

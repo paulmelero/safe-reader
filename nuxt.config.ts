@@ -33,7 +33,7 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       APP_NAME: 'SAFEReader',
-      APP_URL: 'https://paulmelero.github.io/safe-reader',
+      APP_URL: '',
     },
   },
 
@@ -43,11 +43,6 @@ export default defineNuxtConfig({
     '@nuxt/content',
     'nuxt-i18n-micro',
   ],
-
-  // GitHub Pages deployment configuration
-  app: {
-    baseURL: process.env.GITHUB_ACTIONS ? '/safe-reader/' : '/',
-  },
 
   pwa: {
     registerType: 'autoUpdate',
@@ -59,8 +54,8 @@ export default defineNuxtConfig({
       theme_color: '#ffffff',
       background_color: '#ffffff',
       display: 'standalone',
-      start_url: process.env.NODE_ENV === 'production' ? '/safe-reader/' : '/',
-      scope: process.env.NODE_ENV === 'production' ? '/safe-reader/' : '/',
+      start_url: '/',
+      scope: '/',
       icons: [
         {
           src: 'safereader-192x192.png', // Removed leading slash for relative path
