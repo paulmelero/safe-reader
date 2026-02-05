@@ -55,7 +55,7 @@ const readMoreLabel = computed(() => $t('blog.readMore', 'Read more'));
 const locale = computed(() => $getLocale());
 
 const { data: posts } = await useAsyncData(
-  'blog-posts',
+  () => `blog-posts-${locale.value}`,
   () =>
     queryCollection('blog')
       .where('_locale', '=', locale.value)

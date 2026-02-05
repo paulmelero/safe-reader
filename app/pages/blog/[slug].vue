@@ -57,7 +57,7 @@ const notFoundMessage = computed(() =>
 const backToBlogLabel = computed(() => $t("blog.back", "Back to the blog"));
 
 const { data: doc, pending } = await useAsyncData(
-  "blog-post",
+  () => `blog-post-${locale.value}-${slug.value}`,
   async () => {
     if (!slug.value) {
       return null;
