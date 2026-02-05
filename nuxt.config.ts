@@ -15,6 +15,9 @@ export default defineNuxtConfig({
 
   nitro: {
     preset: 'cloudflare_module',
+    prerender: {
+      autoSubfolderIndex: false,
+    },
     alias: {
       canvas: fileURLToPath(
         new URL('./server/mocks/canvas.ts', import.meta.url),
