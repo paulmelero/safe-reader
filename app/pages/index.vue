@@ -36,7 +36,7 @@
     <div class="grow flex flex-col">
       <!-- Reader Mode Trigger Header -->
       <div
-        v-if="currentUrl && !showFallbackPrompt"
+        v-if="currentUrl && !showFallbackPrompt && !fallbackMode"
         class="mb-2 flex justify-end"
       >
         <ReaderModeTrigger />
@@ -49,7 +49,7 @@
         <!-- Reader Mode View -->
         <div
           v-if="fallbackMode && articleData"
-          class="p-4 md:p-8 max-w-none prose lg:prose-xl mx-auto overflow-auto bg-white"
+          class="container p-4 md:p-8 max-w-none prose lg:prose-xl mx-auto overflow-auto bg-white"
         >
           <div class="mb-6 border-b pb-4">
             <h1 v-if="articleData.title" class="mb-2 text-3xl font-bold">
@@ -70,7 +70,10 @@
             </div>
           </div>
 
-          <div v-html="articleData.content"></div>
+          <div
+            v-html="articleData.content"
+            class="container mx-auto prose"
+          ></div>
         </div>
 
         <!-- Iframe View -->

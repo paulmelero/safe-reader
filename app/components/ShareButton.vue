@@ -65,7 +65,6 @@ const shareUrl = async () => {
     await navigator.share({
       url: shareLink.value,
       title: title.value || currentUrl.value,
-      text: title.value || currentUrl.value,
     });
   } catch (error) {
     if (

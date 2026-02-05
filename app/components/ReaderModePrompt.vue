@@ -31,7 +31,7 @@
       </div>
       <button
         @click="close"
-        class="text-gray-400 hover:text-gray-600 p-2 h-10 w-10 rounded-full hover:bg-gray-100 transition-colors"
+        class="absolute top-0 right-0 text-gray-400 hover:text-gray-600 p-2 h-10 w-10 rounded-full hover:bg-gray-100 transition-colors"
         :aria-label="$t('closeButton')"
       >
         ✕

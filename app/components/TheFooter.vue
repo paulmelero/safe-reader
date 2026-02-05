@@ -1,12 +1,12 @@
 <template>
-  <footer class="flex justify-between px-4 py-2 text-sm">
+  <footer class="flex items-center justify-center md:justify-between px-4 py-2 text-sm">
     <div class="text-gray-600 text-center">
       <p>
-        {{ $t("footerCopy", { year: new Date().getFullYear() }) }}
+        {{ $t('footerCopy', { year: new Date().getFullYear() }) }}
       </p>
     </div>
-    <nav>
-      <ul class="flex space-x-4">
+    <nav class="hidden md:block">
+      <ul class="flex space-x-4 items-center">
         <li>
           <NuxtLink :to="localePath('/')">Home</NuxtLink>
         </li>
@@ -14,14 +14,19 @@
           <NuxtLink :to="localePath('/blog')">Blog</NuxtLink>
         </li>
         <li>
-          <NuxtLink :to="localePath('/about')">{{ $t("navAbout") }}</NuxtLink>
+          <NuxtLink :to="localePath('/about')">{{ $t('navAbout') }}</NuxtLink>
         </li>
         <li>
-          <NuxtLink :to="localePath('/terms')">{{ $t("navTerms") }}</NuxtLink>
+          <NuxtLink :to="localePath('/terms')">{{ $t('navTerms') }}</NuxtLink>
+        </li>
+        <li>
+          <NuxtLink :to="localePath('/faq')">{{ $t('navFaq') }}</NuxtLink>
         </li>
       </ul>
     </nav>
-    <LocaleSwitcher />
+    <div class="hidden md:block">
+      <LocaleSwitcher />
+    </div>
   </footer>
 </template>
 

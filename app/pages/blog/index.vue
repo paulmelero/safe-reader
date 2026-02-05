@@ -38,28 +38,28 @@
 </template>
 
 <script setup>
-import { computed } from "vue";
+import { computed } from 'vue';
 
 const { $t, $getLocale } = useI18n();
 const { $localePath } = useNuxtApp();
 
-const pageTitle = computed(() => $t("blog.title", "Blog"));
+const pageTitle = computed(() => $t('blog.title', 'Blog'));
 const pageSubtitle = computed(() =>
-  $t("blog.subtitle", "Updates and notes from Safe Reader"),
+  $t('blog.subtitle', 'Updates and notes from [SAFE]Reader'),
 );
 const emptyStateMessage = computed(() =>
-  $t("blog.empty", "No posts available in this language yet."),
+  $t('blog.empty', 'No posts available in this language yet.'),
 );
-const readMoreLabel = computed(() => $t("blog.readMore", "Read more"));
+const readMoreLabel = computed(() => $t('blog.readMore', 'Read more'));
 
 const locale = computed(() => $getLocale());
 
 const { data: posts } = await useAsyncData(
-  "blog-posts",
+  'blog-posts',
   () =>
-    queryCollection("blog")
-      .where("_locale", "=", locale.value)
-      .order("date", "DESC")
+    queryCollection('blog')
+      .where('_locale', '=', locale.value)
+      .order('date', 'DESC')
       .all(),
   {
     watch: [locale],
@@ -71,14 +71,14 @@ const postList = computed(() => posts.value ?? []);
 const postEntries = computed(() =>
   postList.value.map((post) => {
     const slug =
-      post.slug || post._path?.split("/").filter(Boolean).pop() || post._id;
+      post.slug || post._path?.split('/').filter(Boolean).pop() || post._id;
     const formattedDate = post.date
       ? new Date(post.date).toLocaleDateString(locale.value, {
-          year: "numeric",
-          month: "long",
-          day: "numeric",
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
         })
-      : "";
+      : '';
 
     return {
       ...post,
@@ -96,6 +96,6 @@ useHead({
 });
 
 definePageMeta({
-  title: "BlogPage",
+  title: 'BlogPage',
 });
 </script>

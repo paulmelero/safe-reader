@@ -47,8 +47,8 @@ export default defineNuxtConfig({
   pwa: {
     registerType: 'autoUpdate',
     manifest: {
-      name: 'Safe Reader',
-      short_name: 'Safe Reader',
+      name: '[SAFE]Reader',
+      short_name: '[S]R',
       description:
         'A secure way to view shared URLs (in a sandboxed iframe with no JS).',
       theme_color: '#ffffff',
