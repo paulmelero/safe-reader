@@ -15,8 +15,7 @@ export default defineEventHandler(async (event) => {
     const response = await fetch(targetUrl, {
       method: 'HEAD', // Lightweight check
       headers: {
-        'User-Agent':
-          'Mozilla/5.0 (compatible; SafeReader/1.0; +https://github.com/paulmelero/safe-reader)',
+        'User-Agent': 'Mozilla/5.0 (compatible; [S]R/1.0)',
       },
     });
 

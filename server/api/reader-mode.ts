@@ -18,8 +18,7 @@ export default defineEventHandler(async (event) => {
     // 1. Fetch Request
     const response = await fetch(targetUrl, {
       headers: {
-        'User-Agent':
-          'Mozilla/5.0 (compatible; SafeReader/1.0; +https://github.com/paulmelero/safe-reader)',
+        'User-Agent': 'Mozilla/5.0 (compatible; [S]R/1.0)',
       },
     });
 

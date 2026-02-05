@@ -69,7 +69,7 @@ export default defineNuxtConfig({
         },
       ],
       share_target: {
-        action: process.env.NODE_ENV === 'production' ? '/safe-reader/' : '/',
+        action: '/',
         enctype: 'application/x-www-form-urlencoded',
         method: 'GET',
         params: {
