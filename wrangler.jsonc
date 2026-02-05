@@ -12,9 +12,8 @@
 
   "placement": { "mode": "smart" },
 
-  "build": {
-    "command": "pnpm run build",
-  },
+  "workers_dev": true,
+  "preview_urls": true,
 
   "d1_databases": [
     {
