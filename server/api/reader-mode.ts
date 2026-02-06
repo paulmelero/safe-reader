@@ -101,7 +101,15 @@ export default defineEventHandler(async (event) => {
 
     const cleanHtml = DOMPurify.sanitize(article.content || '', {
       USE_PROFILES: { html: true },
-      FORBID_TAGS: ['script', 'style', 'iframe', 'form', 'object', 'embed', 'canvas'],
+      FORBID_TAGS: [
+        'script',
+        'style',
+        'iframe',
+        'form',
+        'object',
+        'embed',
+        'canvas',
+      ],
       FORBID_ATTR: ['onmouseover', 'onclick', 'onerror', 'onload'],
     });
 
@@ -117,6 +125,24 @@ export default defineEventHandler(async (event) => {
       siteName: article.siteName,
     };
   } catch (error: any) {
+    // Re-throw H3 errors (like our 413) without wrapping them
+    if (error.statusCode) {
+      throw error;
+    }
+
+    const message = String(error?.message || '');
+    const causeMessage = String(error?.cause?.message || '');
+    if (
+      message.includes('fetch failed') &&
+      (causeMessage.includes('Connect Timeout') ||
+        causeMessage.includes('Timeout'))
+    ) {
+      throw createError({
+        statusCode: 408,
+        statusMessage: 'Upstream request timed out',
+      });
+    }
+
     console.error('Reader Error:', error);
     throw createError({
       statusCode: 500,

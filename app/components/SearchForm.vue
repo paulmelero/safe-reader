@@ -6,14 +6,14 @@
       :placeholder="$t('inputPlaceholder')"
       class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primaryHover caret-primary"
       required
-      :disabled="loading"
+      :disabled="isLoading"
     />
     <button
       type="submit"
       class="px-3 py-2 bg-primary text-white rounded-lg hover:bg-primaryHover focus:outline-none focus:ring-2 focus:ring-primaryHover disabled:opacity-50 disabled:cursor-not-allowed"
-      :disabled="loading"
+      :disabled="isLoading"
     >
-      {{ loading ? $t("loading") : $t("loadButton") }}
+      {{ isLoading ? $t("loading") : $t("loadButton") }}
     </button>
   </form>
 </template>
@@ -28,7 +28,7 @@ const { $t } = useI18n();
 
 const attrs = useAttrs();
 
-const { urlInput, loading, loadUrl } = useUrlReader();
+const { urlInput, isLoading, loadUrl } = useUrlReader();
 
 const onSubmit = () => {
   loadUrl();

@@ -2,7 +2,7 @@
   <main
     class="px-2 pb-4 pt-2 md:px-4 md:pb-8 md:pt-4 grow flex flex-col gap-6 relative z-[0]"
     :class="{
-      [successBackground]: currentUrl && !loading && !error,
+      [successBackground]: isSuccessBackground,
     }"
   >
     <!-- Error Message -->
@@ -11,7 +11,10 @@
     </div>
 
     <!-- Loading State -->
-    <div v-if="loading" class="mb-8 p-4 bg-gray-100 text-gray-700 rounded-lg">
+    <div
+      v-if="isLoading"
+      class="mb-8 p-4 bg-gray-100 text-gray-700 rounded-lg"
+    >
       {{ $t('loading') }}
     </div>
 
@@ -36,7 +39,7 @@
     <div class="grow flex flex-col">
       <!-- Reader Mode Trigger Header -->
       <div
-        v-if="currentUrl && !showFallbackPrompt && !fallbackMode"
+        v-if="currentUrl && !shouldShowPrompt && !isReaderModeActive"
         class="mb-2 flex justify-end"
       >
         <ReaderModeTrigger />
@@ -48,7 +51,7 @@
       >
         <!-- Reader Mode View -->
         <div
-          v-if="fallbackMode && articleData"
+          v-if="hasReaderContent"
           class="container p-4 md:p-8 max-w-none prose lg:prose-xl mx-auto overflow-auto bg-white"
         >
           <div class="mb-6 border-b pb-4">
@@ -92,7 +95,7 @@
 
     <!-- Smart Prompt Modal -->
     <ReaderModePrompt
-      :show="showFallbackPrompt && !fallbackMode"
+      :show="shouldShowPrompt && !isReaderModeActive"
       @close="dismissPrompt"
       @confirm="switchToReaderMode"
     />
@@ -116,13 +119,15 @@ const { $t, $getLocale } = useI18n();
 
 const {
   currentUrl,
-  loading,
   error,
+  isLoading,
+  isReaderModeActive,
+  shouldShowPrompt,
+  hasReaderContent,
+  isSuccessBackground,
   title,
   hydrateFromLocation,
-  fallbackMode,
   articleData,
-  showFallbackPrompt,
   dismissPrompt,
   switchToReaderMode,
   showPageTooLargeError,

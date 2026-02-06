@@ -15,6 +15,7 @@
   "promptAction": "Abrir Modo Lectura",
   "navHome": "Inicio",
   "errorReaderFailed": "Error al cargar el modo lectura",
+  "errorReaderTimeout": "El modo lectura agotó el tiempo al obtener esta página. Inténtalo de nuevo más tarde o abre el enlace original.",
   "errorInvalidUrl": "URL inválida",
   "errorFailedUrl": "Error al cargar la URL",
   "navAbout": "Acerca de",

@@ -14,6 +14,7 @@
   "promptBody": "This site may be blocking the preview. Try Reader Mode instead.",
   "promptAction": "Open Reader View",
   "errorReaderFailed": "Failed to load reader mode",
+  "errorReaderTimeout": "Reader mode timed out while fetching this page. Please try again later or open the original link.",
   "errorInvalidUrl": "Invalid URL",
   "errorFailedUrl": "Failed to load URL",
   "navHome": "Home",

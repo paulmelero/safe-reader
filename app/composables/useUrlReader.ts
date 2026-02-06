@@ -1,8 +1,31 @@
-import { nextTick } from 'vue';
+import { computed, nextTick } from 'vue';
 import { runViewTransition } from '~/utils/runViewTransition';
 
 type LoadOptions = {
   animate?: boolean;
+};
+
+type ReaderPhase =
+  | 'idle'
+  | 'validating'
+  | 'navigating'
+  | 'ready'
+  | 'frameBlocked'
+  | 'readerLoading'
+  | 'readerReady'
+  | 'readerError';
+
+type ReaderErrorCode =
+  | 'invalidUrl'
+  | 'navigationFailed'
+  | 'readerTimeout'
+  | 'readerTooLarge'
+  | 'readerFailed';
+
+type ReaderStatus = {
+  phase: ReaderPhase;
+  errorCode: ReaderErrorCode | null;
+  message: string;
 };
 
 const isValidUrl = (value: string) => {
@@ -16,57 +39,80 @@ const isValidUrl = (value: string) => {
 export const useUrlReader = () => {
   const currentUrl = useState<string>('url-reader:current-url', () => '');
   const urlInput = useState<string>('url-reader:url-input', () => '');
-  const loading = useState<boolean>('url-reader:loading', () => false);
-  const error = useState<string>('url-reader:error', () => '');
   const title = useState<string>('url-reader:title', () => '');
-
-  // Reader Mode State
-  const fallbackMode = useState<boolean>(
-    'url-reader:fallback-mode',
-    () => false,
-  );
+  const status = useState<ReaderStatus>('url-reader:status', () => ({
+    phase: 'idle',
+    errorCode: null,
+    message: '',
+  }));
   const articleData = useState<any | null>(
     'url-reader:article-data',
     () => null,
   );
-  const readerLoading = useState<boolean>(
-    'url-reader:reader-loading',
-    () => false,
-  );
-  const showFallbackPrompt = useState<boolean>(
-    'url-reader:show-prompt',
-    () => false,
-  );
-  const iframeLikelyBlocked = useState<boolean>(
-    'url-reader:iframe-blocked',
-    () => false,
-  );
-  const showPageTooLargeError = useState<boolean>(
-    'url-reader:page-too-large',
-    () => false,
-  );
-
   const { $t } = useI18n();
   const router = useRouter();
+  const { checkFrameAccess: checkFrameAccessApi, fetchReaderMode } =
+    useServerReaderMode();
+
+  const setStatus = (next: Partial<ReaderStatus>) => {
+    status.value = {
+      ...status.value,
+      ...next,
+    };
+  };
+
+  const error = computed(() => status.value.message);
+  const hasError = computed(
+    () => Boolean(status.value.errorCode) || Boolean(status.value.message),
+  );
+  const isLoading = computed(() =>
+    ['validating', 'navigating', 'readerLoading'].includes(status.value.phase),
+  );
+  const isReaderLoading = computed(
+    () => status.value.phase === 'readerLoading',
+  );
+  const isReaderModeActive = computed(() =>
+    ['readerLoading', 'readerReady'].includes(status.value.phase),
+  );
+  const shouldShowPrompt = computed(
+    () => status.value.phase === 'frameBlocked',
+  );
+  const showPageTooLargeError = computed(
+    () => status.value.errorCode === 'readerTooLarge',
+  );
+  const hasReaderContent = computed(
+    () => status.value.phase === 'readerReady' && Boolean(articleData.value),
+  );
+  const isSuccessBackground = computed(
+    () => Boolean(currentUrl.value) && !isLoading.value && !error.value,
+  );
 
   const loadUrl = async (options: LoadOptions = { animate: true }) => {
-    error.value = '';
+    setStatus({
+      phase: 'validating',
+      errorCode: null,
+      message: '',
+    });
     // Reset reader mode on new URL load
-    fallbackMode.value = false;
     articleData.value = null;
-    showFallbackPrompt.value = false;
-    iframeLikelyBlocked.value = false;
-    showPageTooLargeError.value = false;
 
     if (!urlInput.value || !isValidUrl(urlInput.value)) {
-      error.value = $t('errorInvalidUrl') as string;
+      setStatus({
+        phase: 'idle',
+        errorCode: 'invalidUrl',
+        message: $t('errorInvalidUrl') as string,
+      });
       return;
     }
 
     const targetUrl = urlInput.value;
     const hostname = new URL(targetUrl).hostname;
     title.value = $t('readingTitle', { hostname }) as string;
-    loading.value = true;
+    setStatus({
+      phase: 'navigating',
+      errorCode: null,
+      message: '',
+    });
 
     // Start checking for frame blocks in parallel
     checkFrameAccess(targetUrl);
@@ -87,24 +133,30 @@ export const useUrlReader = () => {
       }
     } catch (e) {
       title.value = '';
-      error.value = $t('errorFailedUrl') as string;
+      setStatus({
+        phase: 'idle',
+        errorCode: 'navigationFailed',
+        message: $t('errorFailedUrl') as string,
+      });
     } finally {
-      loading.value = false;
+      if (status.value.phase === 'navigating') {
+        setStatus({ phase: 'ready' });
+      }
     }
   };
 
   const checkFrameAccess = async (url: string) => {
     try {
-      const { iframeLikelyBlocked: isBlocked } = await $fetch<any>(
-        '/api/check-frame',
-        {
-          query: { url },
-        },
-      );
+      const { iframeLikelyBlocked: isBlocked } =
+        await checkFrameAccessApi(url);
 
       if (isBlocked) {
-        iframeLikelyBlocked.value = true;
-        showFallbackPrompt.value = true;
+        if (hasError.value) {
+          return;
+        }
+        if (['navigating', 'ready'].includes(status.value.phase)) {
+          setStatus({ phase: 'frameBlocked' });
+        }
       }
     } catch (e) {
       console.warn('Frame check failed', e);
@@ -114,44 +166,76 @@ export const useUrlReader = () => {
   const switchToReaderMode = async () => {
     if (!currentUrl.value) return;
 
-    fallbackMode.value = true;
-    readerLoading.value = true;
-    showFallbackPrompt.value = false;
-    error.value = '';
+    setStatus({
+      phase: 'readerLoading',
+      errorCode: null,
+      message: '',
+    });
+    articleData.value = null;
 
     try {
-      const data = await $fetch<any>('/api/reader-mode', {
-        query: { url: currentUrl.value },
-      });
+      const data = await fetchReaderMode(currentUrl.value);
       articleData.value = data;
       if (data && data.title) {
         title.value = data.title as string;
       }
+      setStatus({ phase: 'readerReady' });
     } catch (e: any) {
       console.error('Reader mode failed', e);
-      if (e?.response?.status === 413 || e?.statusCode === 413) {
-        showPageTooLargeError.value = true;
+      const status =
+        e?.response?.status ??
+        e?.status ??
+        e?.statusCode ??
+        e?.data?.statusCode ??
+        e?.data?.status;
+      if (status === 413) {
+        setStatus({
+          phase: 'readerError',
+          errorCode: 'readerTooLarge',
+          message: '',
+        });
+      } else if (status === 408) {
+        setStatus({
+          phase: 'readerError',
+          errorCode: 'readerTimeout',
+          message: $t('errorReaderTimeout') as string,
+        });
       } else {
-        error.value =
-          ($t('errorReaderFailed') as string) ||
-          'Failed to load reader mode: ' + (e.message || 'Unknown error');
+        setStatus({
+          phase: 'readerError',
+          errorCode: 'readerFailed',
+          message:
+            ($t('errorReaderFailed') as string) ||
+            'Failed to load reader mode: ' + (e.message || 'Unknown error'),
+        });
       }
-      fallbackMode.value = false;
     } finally {
-      readerLoading.value = false;
+      if (status.value.phase === 'readerLoading') {
+        setStatus({ phase: 'readerError' });
+      }
     }
   };
 
   const exitReaderMode = () => {
-    fallbackMode.value = false;
+    if (status.value.phase !== 'readerLoading') {
+      setStatus({ phase: 'ready' });
+    }
   };
 
   const dismissPrompt = () => {
-    showFallbackPrompt.value = false;
+    if (status.value.phase === 'frameBlocked') {
+      setStatus({ phase: 'ready' });
+    }
   };
 
   const dismissPageTooLargeError = () => {
-    showPageTooLargeError.value = false;
+    if (status.value.errorCode === 'readerTooLarge') {
+      setStatus({
+        phase: 'ready',
+        errorCode: null,
+        message: '',
+      });
+    }
   };
 
   const hydrateFromLocation = (location: string) => {
@@ -181,15 +265,14 @@ export const useUrlReader = () => {
 
     const applyReset = async () => {
       urlInput.value = '';
-      error.value = '';
       currentUrl.value = '';
       title.value = '';
-      loading.value = false;
-      fallbackMode.value = false;
       articleData.value = null;
-      showFallbackPrompt.value = false;
-      iframeLikelyBlocked.value = false;
-      showPageTooLargeError.value = false;
+      setStatus({
+        phase: 'idle',
+        errorCode: null,
+        message: '',
+      });
       await nextTick();
     };
 
@@ -213,18 +296,22 @@ export const useUrlReader = () => {
     hydrateFromLocation,
     currentUrl,
     urlInput,
-    loading,
+    status,
     error,
+    hasError,
+    isLoading,
+    isReaderLoading,
+    isReaderModeActive,
+    shouldShowPrompt,
+    showPageTooLargeError,
+    hasReaderContent,
+    isSuccessBackground,
     title,
     resetState,
-    fallbackMode,
     articleData,
-    readerLoading,
     switchToReaderMode,
     exitReaderMode,
-    showFallbackPrompt,
     dismissPrompt,
-    showPageTooLargeError,
     dismissPageTooLargeError,
   };
 };
