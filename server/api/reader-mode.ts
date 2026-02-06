@@ -92,7 +92,7 @@ export default defineEventHandler(async (event) => {
 
     const cleanHtml = DOMPurify.sanitize(article.content || '', {
       USE_PROFILES: { html: true },
-      FORBID_TAGS: ['script', 'style', 'iframe', 'form', 'object', 'embed'],
+      FORBID_TAGS: ['script', 'style', 'iframe', 'form', 'object', 'embed', 'canvas'],
       FORBID_ATTR: ['onmouseover', 'onclick', 'onerror', 'onload'],
     });
 
