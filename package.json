@@ -6,7 +6,9 @@
     "build": "nuxt build",
     "dev": "nuxt dev",
     "preview": "pnpm dlx wrangler dev",
-    "postinstall": "nuxt prepare"
+    "postinstall": "nuxt prepare",
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "dependencies": {
     "@mozilla/readability": "^0.6.0",
@@ -22,6 +24,13 @@
     "@cloudflare/unenv-preset": "^2.12.0",
     "@nuxtjs/tailwindcss": "^6.14.0",
     "@tailwindcss/typography": "^0.5.19",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/user-event": "^14.6.1",
+    "@testing-library/vue": "^8.1.0",
+    "@vitejs/plugin-vue": "^6.0.4",
+    "jsdom": "^28.0.0",
+    "vitest": "^4.0.18",
+    "vue": "^3.5.27",
     "wrangler": "4.59.0"
   },
   "packageManager": "pnpm@9.12.0+sha512.4abf725084d7bcbafbd728bfc7bee61f2f791f977fd87542b3579dcb23504d170d46337945e4c66485cd12d588a0c0e570ed9c477e7ccdd8507cf05f3f92eaca"
