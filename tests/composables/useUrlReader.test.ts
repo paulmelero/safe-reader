@@ -62,6 +62,33 @@ describe('useUrlReader', () => {
     expect(status.value.phase).toBe('frameBlocked');
   });
 
+  it('ignores stale frame checks after a new load starts', async () => {
+    const { urlInput, status, loadUrl } = useUrlReader();
+    const serverMocks = globalThis.__serverReaderModeMocks;
+
+    let resolveFirst: (value: { iframeLikelyBlocked: boolean }) => void;
+    const firstCheck = new Promise<{ iframeLikelyBlocked: boolean }>(
+      (resolve) => {
+        resolveFirst = resolve;
+      },
+    );
+
+    serverMocks.checkFrameAccess
+      .mockReturnValueOnce(firstCheck)
+      .mockResolvedValueOnce({ iframeLikelyBlocked: false });
+
+    urlInput.value = 'https://example.com/one';
+    await loadUrl({ animate: false });
+
+    urlInput.value = 'https://example.com/two';
+    await loadUrl({ animate: false });
+
+    resolveFirst({ iframeLikelyBlocked: true });
+    await flushPromises();
+
+    expect(status.value.phase).not.toBe('frameBlocked');
+  });
+
   it('switches to reader mode and stores article data', async () => {
     const { currentUrl, status, title, articleData, switchToReaderMode } =
       useUrlReader();

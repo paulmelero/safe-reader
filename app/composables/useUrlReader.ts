@@ -53,6 +53,8 @@ export const useUrlReader = () => {
   const router = useRouter();
   const { checkFrameAccess: checkFrameAccessApi, fetchReaderMode } =
     useServerReaderMode();
+  let frameCheckRequestId = 0;
+  let latestFrameCheckUrl = '';
 
   const setStatus = (next: Partial<ReaderStatus>) => {
     status.value = {
@@ -115,7 +117,9 @@ export const useUrlReader = () => {
     });
 
     // Start checking for frame blocks in parallel
-    checkFrameAccess(targetUrl);
+    latestFrameCheckUrl = targetUrl;
+    const currentRequestId = ++frameCheckRequestId;
+    checkFrameAccess(targetUrl, currentRequestId);
 
     const shouldAnimate = options.animate ?? !currentUrl.value;
 
@@ -145,10 +149,13 @@ export const useUrlReader = () => {
     }
   };
 
-  const checkFrameAccess = async (url: string) => {
+  const checkFrameAccess = async (url: string, requestId: number) => {
     try {
       const { iframeLikelyBlocked: isBlocked } =
         await checkFrameAccessApi(url);
+      if (requestId !== frameCheckRequestId || url !== latestFrameCheckUrl) {
+        return;
+      }
 
       if (isBlocked) {
         if (hasError.value) {
@@ -262,6 +269,8 @@ export const useUrlReader = () => {
 
   const resetState = async (options: LoadOptions = { animate: true }) => {
     const shouldAnimate = options.animate ?? Boolean(currentUrl.value);
+    frameCheckRequestId += 1;
+    latestFrameCheckUrl = '';
 
     const applyReset = async () => {
       urlInput.value = '';
