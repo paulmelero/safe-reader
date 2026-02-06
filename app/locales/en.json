@@ -44,5 +44,7 @@
   "faq.q4": "How does [SAFE]Reader access content?",
   "faq.a4": "[SAFE]Reader fetches the publicly available HTML of a web page — the same content that any web browser, search engine bot, or web crawler would receive when requesting the URL. No paywalls are bypassed, no authentication is circumvented, and no private content is accessed.",
   "faq.q5": "What if a publisher has a complaint?",
-  "faq.a5": "We take publisher concerns seriously. If you are a content owner and have concerns about how [SAFE]Reader interacts with your website, we would be happy to hear from you and work together to find a fair resolution. Please reach out to us."
+  "faq.a5": "We take publisher concerns seriously. If you are a content owner and have concerns about how [SAFE]Reader interacts with your website, we would be happy to hear from you and work together to find a fair resolution. Please reach out to us.",
+  "pageTooLargeTitle": "Page too large",
+  "pageTooLargeBody": "This page is too large to process in reader mode. Try opening the original link directly in your browser instead."
 }

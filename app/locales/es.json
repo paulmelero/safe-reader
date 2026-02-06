@@ -44,5 +44,7 @@
   "faq.q4": "¿Cómo accede [SAFE]Reader al contenido?",
   "faq.a4": "[SAFE]Reader obtiene el HTML público de una página web — el mismo contenido que cualquier navegador, bot de motor de búsqueda o rastreador web recibiría al solicitar la URL. No se eluden muros de pago, no se sortea ninguna autenticación y no se accede a contenido privado.",
   "faq.q5": "¿Qué pasa si un editor tiene una queja?",
-  "faq.a5": "Nos tomamos en serio las preocupaciones de los editores. Si eres propietario de contenido y tienes inquietudes sobre cómo [SAFE]Reader interactúa con tu sitio web, estaremos encantados de escucharte y trabajar juntos para encontrar una solución justa. No dudes en contactarnos."
+  "faq.a5": "Nos tomamos en serio las preocupaciones de los editores. Si eres propietario de contenido y tienes inquietudes sobre cómo [SAFE]Reader interactúa con tu sitio web, estaremos encantados de escucharte y trabajar juntos para encontrar una solución justa. No dudes en contactarnos.",
+  "pageTooLargeTitle": "Página demasiado grande",
+  "pageTooLargeBody": "Esta página es demasiado grande para procesarla en modo lectura. Prueba a abrir el enlace original directamente en tu navegador."
 }

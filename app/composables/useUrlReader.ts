@@ -41,6 +41,10 @@ export const useUrlReader = () => {
     'url-reader:iframe-blocked',
     () => false,
   );
+  const showPageTooLargeError = useState<boolean>(
+    'url-reader:page-too-large',
+    () => false,
+  );
 
   const { $t } = useI18n();
   const router = useRouter();
@@ -52,6 +56,7 @@ export const useUrlReader = () => {
     articleData.value = null;
     showFallbackPrompt.value = false;
     iframeLikelyBlocked.value = false;
+    showPageTooLargeError.value = false;
 
     if (!urlInput.value || !isValidUrl(urlInput.value)) {
       error.value = $t('errorInvalidUrl') as string;
@@ -124,9 +129,13 @@ export const useUrlReader = () => {
       }
     } catch (e: any) {
       console.error('Reader mode failed', e);
-      error.value =
-        ($t('errorReaderFailed') as string) ||
-        'Failed to load reader mode: ' + (e.message || 'Unknown error');
+      if (e?.response?.status === 413 || e?.statusCode === 413) {
+        showPageTooLargeError.value = true;
+      } else {
+        error.value =
+          ($t('errorReaderFailed') as string) ||
+          'Failed to load reader mode: ' + (e.message || 'Unknown error');
+      }
       fallbackMode.value = false;
     } finally {
       readerLoading.value = false;
@@ -139,6 +148,10 @@ export const useUrlReader = () => {
 
   const dismissPrompt = () => {
     showFallbackPrompt.value = false;
+  };
+
+  const dismissPageTooLargeError = () => {
+    showPageTooLargeError.value = false;
   };
 
   const hydrateFromLocation = (location: string) => {
@@ -176,6 +189,7 @@ export const useUrlReader = () => {
       articleData.value = null;
       showFallbackPrompt.value = false;
       iframeLikelyBlocked.value = false;
+      showPageTooLargeError.value = false;
       await nextTick();
     };
 
@@ -210,5 +224,7 @@ export const useUrlReader = () => {
     exitReaderMode,
     showFallbackPrompt,
     dismissPrompt,
+    showPageTooLargeError,
+    dismissPageTooLargeError,
   };
 };

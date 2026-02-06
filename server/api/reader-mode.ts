@@ -31,6 +31,15 @@ export default defineEventHandler(async (event) => {
 
     const rawHtml = await response.text();
 
+    // Guard: bail out early on oversized pages to avoid CPU limit
+    const MAX_HTML_SIZE = 300_000; // ~300 KB
+    if (rawHtml.length > MAX_HTML_SIZE) {
+      throw createError({
+        statusCode: 413,
+        statusMessage: 'Page too large for reader mode',
+      });
+    }
+
     // 2. Parse HTML
     const { window, document } = parseHTML(rawHtml);
 

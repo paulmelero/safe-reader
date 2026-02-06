@@ -96,6 +96,12 @@
       @close="dismissPrompt"
       @confirm="switchToReaderMode"
     />
+
+    <!-- Page Too Large Modal -->
+    <PageTooLargeModal
+      :show="showPageTooLargeError"
+      @close="dismissPageTooLargeError"
+    />
   </main>
 </template>
 
@@ -119,6 +125,8 @@ const {
   showFallbackPrompt,
   dismissPrompt,
   switchToReaderMode,
+  showPageTooLargeError,
+  dismissPageTooLargeError,
 } = useUrlReader();
 
 useHead({
