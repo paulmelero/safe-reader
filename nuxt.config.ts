@@ -95,6 +95,16 @@ export default defineNuxtConfig({
     ],
     defaultLocale: 'es',
     translationDir: 'app/locales',
+    globalLocaleRoutes: {
+      '/about': {
+        en: '/about',
+        es: '/acerca-de',
+      },
+      '/terms': {
+        en: '/terms',
+        es: '/terminos',
+      },
+    },
   },
 
   content: {

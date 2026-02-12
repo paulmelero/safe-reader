@@ -22,5 +22,14 @@ export default defineContentConfig({
         _locale: z.enum(["en", "es"]),
       }),
     }),
+    pages: defineCollection({
+      type: "page",
+      source: "pages/**/*.md",
+      schema: z.object({
+        slug: z.string().min(1),
+        title: z.string().min(1),
+        _locale: z.enum(["en", "es"]),
+      }),
+    }),
   },
 });

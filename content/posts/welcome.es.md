@@ -12,8 +12,8 @@ La aplicación funciona por completo en tu navegador, por lo que los enlaces que
 
 ## Conoce más
 
-- Visita la página [Acerca de](/about) para entender el origen de [SAFE]Reader y cómo funciona el sandbox.
-- Revisa la página de [Términos](/terms) para obtener pautas rápidas sobre el uso responsable y el manejo de datos.
+- Visita la página [Acerca de](/acerca-de) para entender el origen de \[SAFE\]Reader y cómo funciona el sandbox.
+- Revisa la página de [Términos y condiciones](/terminos) para obtener pautas rápidas sobre el uso responsable y el manejo de datos.
 - Sigue este [blog](/blog) para enterarte de novedades, consejos y notas de versiones a medida que evoluciona el proyecto de código abierto.
 
 ## Preguntas frecuentes

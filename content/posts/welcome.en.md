@@ -12,7 +12,7 @@ The app lives entirely in the browser, so the links you paste never leave your d
 
 ## Learn more
 
-- Visit the [About page](/about) to understand why [SAFE]Reader exists and how the sandbox works.
+- Visit the [About page](/about) to understand why \[SAFE\]Reader exists and how the sandbox works.
 - Review the [Terms page](/terms) for quick guidance on responsible usage and data handling.
 - Follow this [blog](/blog) for future updates, tips, and release notes as the open source project evolves.
 

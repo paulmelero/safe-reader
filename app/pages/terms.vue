@@ -1,26 +1,59 @@
 <template>
-  <InfoPageContent :title="title" :paragraphs="paragraphs" />
+  <article v-if="doc" class="prose flex flex-col gap-6">
+    <header class="flex flex-col gap-2 border-b border-gray-200 pb-4">
+      <h1 class="text-3xl font-semibold text-gray-800">
+        {{ doc.title }}
+      </h1>
+    </header>
+
+    <ContentRenderer :value="doc">
+      <template #default="{ body }">
+        <ContentRendererMarkdown :value="body" />
+      </template>
+    </ContentRenderer>
+  </article>
+
+  <p v-else-if="pending" class="text-center text-gray-500">
+    {{ loadingMessage }}
+  </p>
+
+  <p v-else class="text-center text-gray-500">
+    {{ notFoundMessage }}
+  </p>
 </template>
 
 <script setup>
-const { title, paragraphs } = useStaticPageContent({
-  titleKey: 'terms.title',
-  titleDefault: 'Terms',
-  bodyKeys: ['terms.body1', 'terms.body2', 'terms.body3', 'terms.body4'],
-  bodyDefaults: [
-    '[SAFE]Reader previews links inside an isolated iframe to reduce risk, but you remain responsible for the URLs you open.',
-    'We do not store the URLs you preview; the address stays within your browser.',
-    'By using [SAFE]Reader you agree to use it responsibly and comply with local regulations.',
-    'We disclaim any liability for damages resulting from the use of [SAFE]Reader. We only access what is published publicly on the web.',
-  ],
-});
+import { useNuxtApp } from '#imports';
 
-useHead({
-  title: () => title.value,
-});
+import { computed } from 'vue';
+
+const { $getLocale, $t } = useNuxtApp();
+const locale = computed(() => $getLocale());
 
 definePageMeta({
-  title: 'TermsPage',
+  title: 'terms',
   layout: 'article',
+});
+
+const loadingMessage = computed(() => $t('loading', 'Loading...'));
+const notFoundMessage = computed(() => $t('blog.notFound', 'Page not found.'));
+
+const route = useRoute();
+const slug = computed(() => String(route.path.split('/').pop() || ''));
+
+const { data: doc, pending } = await useAsyncData(
+  () => `page-terms-${locale.value}-${slug.value}`,
+  () =>
+    queryCollection('pages')
+      .where('slug', '=', slug.value)
+      .where('_locale', '=', locale.value)
+      .first(),
+  {
+    watch: [locale],
+  },
+);
+
+useHead({
+  title: () => doc.value?.title || $t('navTerms', 'Terms'),
 });
 </script>
