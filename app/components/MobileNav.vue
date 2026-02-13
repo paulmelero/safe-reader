@@ -97,8 +97,8 @@ const open = ref(false);
 const links = [
   { to: '/', labelKey: 'navHome' },
   { to: '/blog', labelKey: 'blog.title' },
-  { to: '/about', labelKey: 'navAbout' },
-  { to: '/terms', labelKey: 'navTerms' },
+  { to: { name: 'about' }, labelKey: 'navAbout' },
+  { to: { name: 'terms' }, labelKey: 'navTerms' },
   { to: '/faq', labelKey: 'navFaq' },
 ];
 
