@@ -39,5 +39,5 @@
   "faq.q5": "What if a publisher has a complaint?",
   "faq.a5": "We take publisher concerns seriously. If you are a content owner and have concerns about how [SAFE]Reader interacts with your website, we would be happy to hear from you and work together to find a fair resolution. Please reach out to us.",
   "pageTooLargeTitle": "Page too large",
-  "pageTooLargeBody": "This page is too large to process in reader mode. Try opening the original link directly in your browser instead."
+  "pageTooLargeBody": "This page is too large to process in reader mode. Since this is a hobby project with limited resources, we have to set some limits on what can be loaded. You can still try loading the original page directly. Sorry for the inconvenience."
 }
