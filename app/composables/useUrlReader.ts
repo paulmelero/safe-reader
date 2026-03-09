@@ -1,26 +1,27 @@
-import { computed, nextTick } from 'vue';
-import { runViewTransition } from '~/utils/runViewTransition';
+import { computed, nextTick } from "vue";
+import { runViewTransition } from "~/utils/runViewTransition";
 
 type LoadOptions = {
   animate?: boolean;
 };
 
 type ReaderPhase =
-  | 'idle'
-  | 'validating'
-  | 'navigating'
-  | 'ready'
-  | 'frameBlocked'
-  | 'readerLoading'
-  | 'readerReady'
-  | 'readerError';
+  | "idle"
+  | "validating"
+  | "navigating"
+  | "ready"
+  | "frameBlocked"
+  | "readerLoading"
+  | "readerReady"
+  | "readerError";
 
 type ReaderErrorCode =
-  | 'invalidUrl'
-  | 'navigationFailed'
-  | 'readerTimeout'
-  | 'readerTooLarge'
-  | 'readerFailed';
+  | "invalidUrl"
+  | "navigationFailed"
+  | "readerTimeout"
+  | "readerTooLarge"
+  | "readerForbidden"
+  | "readerFailed";
 
 type ReaderStatus = {
   phase: ReaderPhase;
@@ -37,16 +38,16 @@ const isValidUrl = (value: string) => {
 };
 
 export const useUrlReader = () => {
-  const currentUrl = useState<string>('url-reader:current-url', () => '');
-  const urlInput = useState<string>('url-reader:url-input', () => '');
-  const title = useState<string>('url-reader:title', () => '');
-  const status = useState<ReaderStatus>('url-reader:status', () => ({
-    phase: 'idle',
+  const currentUrl = useState<string>("url-reader:current-url", () => "");
+  const urlInput = useState<string>("url-reader:url-input", () => "");
+  const title = useState<string>("url-reader:title", () => "");
+  const status = useState<ReaderStatus>("url-reader:status", () => ({
+    phase: "idle",
     errorCode: null,
-    message: '',
+    message: "",
   }));
   const articleData = useState<any | null>(
-    'url-reader:article-data',
+    "url-reader:article-data",
     () => null,
   );
   const { $t } = useI18n();
@@ -54,7 +55,7 @@ export const useUrlReader = () => {
   const { checkFrameAccess: checkFrameAccessApi, fetchReaderMode } =
     useServerReaderMode();
   let frameCheckRequestId = 0;
-  let latestFrameCheckUrl = '';
+  let latestFrameCheckUrl = "";
 
   const setStatus = (next: Partial<ReaderStatus>) => {
     status.value = {
@@ -68,22 +69,42 @@ export const useUrlReader = () => {
     () => Boolean(status.value.errorCode) || Boolean(status.value.message),
   );
   const isLoading = computed(() =>
-    ['validating', 'navigating', 'readerLoading'].includes(status.value.phase),
+    ["validating", "navigating", "readerLoading"].includes(status.value.phase),
   );
   const isReaderLoading = computed(
-    () => status.value.phase === 'readerLoading',
+    () => status.value.phase === "readerLoading",
   );
   const isReaderModeActive = computed(() =>
-    ['readerLoading', 'readerReady'].includes(status.value.phase),
+    ["readerLoading", "readerReady"].includes(status.value.phase),
   );
   const shouldShowPrompt = computed(
-    () => status.value.phase === 'frameBlocked',
+    () => status.value.phase === "frameBlocked",
   );
-  const showPageTooLargeError = computed(
-    () => status.value.errorCode === 'readerTooLarge',
+  const showErrorModal = computed(
+    () =>
+      status.value.errorCode === "readerTooLarge" ||
+      status.value.errorCode === "readerForbidden",
   );
+  const errorModalTitle = computed(() => {
+    if (status.value.errorCode === "readerTooLarge") {
+      return $t("pageTooLargeTitle") as string;
+    }
+    if (status.value.errorCode === "readerForbidden") {
+      return $t("readerForbiddenTitle") as string;
+    }
+    return "";
+  });
+  const errorModalBody = computed(() => {
+    if (status.value.errorCode === "readerTooLarge") {
+      return $t("pageTooLargeBody") as string;
+    }
+    if (status.value.errorCode === "readerForbidden") {
+      return $t("readerForbiddenBody") as string;
+    }
+    return "";
+  });
   const hasReaderContent = computed(
-    () => status.value.phase === 'readerReady' && Boolean(articleData.value),
+    () => status.value.phase === "readerReady" && Boolean(articleData.value),
   );
   const isSuccessBackground = computed(
     () => Boolean(currentUrl.value) && !isLoading.value && !error.value,
@@ -91,29 +112,29 @@ export const useUrlReader = () => {
 
   const loadUrl = async (options: LoadOptions = { animate: true }) => {
     setStatus({
-      phase: 'validating',
+      phase: "validating",
       errorCode: null,
-      message: '',
+      message: "",
     });
     // Reset reader mode on new URL load
     articleData.value = null;
 
     if (!urlInput.value || !isValidUrl(urlInput.value)) {
       setStatus({
-        phase: 'idle',
-        errorCode: 'invalidUrl',
-        message: $t('errorInvalidUrl') as string,
+        phase: "idle",
+        errorCode: "invalidUrl",
+        message: $t("errorInvalidUrl") as string,
       });
       return;
     }
 
     const targetUrl = urlInput.value;
     const hostname = new URL(targetUrl).hostname;
-    title.value = $t('readingTitle', { hostname }) as string;
+    title.value = $t("readingTitle", { hostname }) as string;
     setStatus({
-      phase: 'navigating',
+      phase: "navigating",
       errorCode: null,
-      message: '',
+      message: "",
     });
 
     // Start checking for frame blocks in parallel
@@ -136,23 +157,22 @@ export const useUrlReader = () => {
         await applyNavigation();
       }
     } catch (e) {
-      title.value = '';
+      title.value = "";
       setStatus({
-        phase: 'idle',
-        errorCode: 'navigationFailed',
-        message: $t('errorFailedUrl') as string,
+        phase: "idle",
+        errorCode: "navigationFailed",
+        message: $t("errorFailedUrl") as string,
       });
     } finally {
-      if (status.value.phase === 'navigating') {
-        setStatus({ phase: 'ready' });
+      if (status.value.phase === "navigating") {
+        setStatus({ phase: "ready" });
       }
     }
   };
 
   const checkFrameAccess = async (url: string, requestId: number) => {
     try {
-      const { iframeLikelyBlocked: isBlocked } =
-        await checkFrameAccessApi(url);
+      const { iframeLikelyBlocked: isBlocked } = await checkFrameAccessApi(url);
       if (requestId !== frameCheckRequestId || url !== latestFrameCheckUrl) {
         return;
       }
@@ -161,12 +181,12 @@ export const useUrlReader = () => {
         if (hasError.value) {
           return;
         }
-        if (['navigating', 'ready'].includes(status.value.phase)) {
-          setStatus({ phase: 'frameBlocked' });
+        if (["navigating", "ready"].includes(status.value.phase)) {
+          setStatus({ phase: "frameBlocked" });
         }
       }
     } catch (e) {
-      console.warn('Frame check failed', e);
+      console.warn("Frame check failed", e);
     }
   };
 
@@ -174,9 +194,9 @@ export const useUrlReader = () => {
     if (!currentUrl.value) return;
 
     setStatus({
-      phase: 'readerLoading',
+      phase: "readerLoading",
       errorCode: null,
-      message: '',
+      message: "",
     });
     articleData.value = null;
 
@@ -186,9 +206,9 @@ export const useUrlReader = () => {
       if (data && data.title) {
         title.value = data.title as string;
       }
-      setStatus({ phase: 'readerReady' });
+      setStatus({ phase: "readerReady" });
     } catch (e: any) {
-      console.error('Reader mode failed', e);
+      console.error("Reader mode failed", e);
       const status =
         e?.response?.status ??
         e?.status ??
@@ -197,58 +217,67 @@ export const useUrlReader = () => {
         e?.data?.status;
       if (status === 413) {
         setStatus({
-          phase: 'readerError',
-          errorCode: 'readerTooLarge',
-          message: '',
+          phase: "readerError",
+          errorCode: "readerTooLarge",
+          message: "",
+        });
+      } else if (status === 403) {
+        setStatus({
+          phase: "readerError",
+          errorCode: "readerForbidden",
+          message: "",
         });
       } else if (status === 408) {
         setStatus({
-          phase: 'readerError',
-          errorCode: 'readerTimeout',
-          message: $t('errorReaderTimeout') as string,
+          phase: "readerError",
+          errorCode: "readerTimeout",
+          message: $t("errorReaderTimeout") as string,
         });
       } else {
         setStatus({
-          phase: 'readerError',
-          errorCode: 'readerFailed',
+          phase: "readerError",
+          errorCode: "readerFailed",
           message:
-            ($t('errorReaderFailed') as string) ||
-            'Failed to load reader mode: ' + (e.message || 'Unknown error'),
+            ($t("errorReaderFailed") as string) ||
+            "Failed to load reader mode: " + (e.message || "Unknown error"),
         });
       }
     } finally {
-      if (status.value.phase === 'readerLoading') {
-        setStatus({ phase: 'readerError' });
+      if (status.value.phase === "readerLoading") {
+        setStatus({ phase: "readerError" });
       }
     }
   };
 
   const exitReaderMode = () => {
-    if (status.value.phase !== 'readerLoading') {
-      setStatus({ phase: 'ready' });
+    if (status.value.phase !== "readerLoading") {
+      setStatus({ phase: "ready" });
     }
   };
 
   const dismissPrompt = () => {
-    if (status.value.phase === 'frameBlocked') {
-      setStatus({ phase: 'ready' });
+    if (status.value.phase === "frameBlocked") {
+      setStatus({ phase: "ready" });
     }
   };
 
-  const dismissPageTooLargeError = () => {
-    if (status.value.errorCode === 'readerTooLarge') {
+  const dismissErrorModal = () => {
+    if (
+      status.value.errorCode === "readerTooLarge" ||
+      status.value.errorCode === "readerForbidden"
+    ) {
       setStatus({
-        phase: 'ready',
+        phase: "ready",
         errorCode: null,
-        message: '',
+        message: "",
       });
     }
   };
 
   const hydrateFromLocation = (location: string) => {
     const url = new URL(location);
-    const urlFromParams = url.searchParams.get('url');
-    const textFromShareParams = url.searchParams.get('text');
+    const urlFromParams = url.searchParams.get("url");
+    const textFromShareParams = url.searchParams.get("text");
 
     let urlToLoad: string | null = null;
 
@@ -270,17 +299,17 @@ export const useUrlReader = () => {
   const resetState = async (options: LoadOptions = { animate: true }) => {
     const shouldAnimate = options.animate ?? Boolean(currentUrl.value);
     frameCheckRequestId += 1;
-    latestFrameCheckUrl = '';
+    latestFrameCheckUrl = "";
 
     const applyReset = async () => {
-      urlInput.value = '';
-      currentUrl.value = '';
-      title.value = '';
+      urlInput.value = "";
+      currentUrl.value = "";
+      title.value = "";
       articleData.value = null;
       setStatus({
-        phase: 'idle',
+        phase: "idle",
         errorCode: null,
-        message: '',
+        message: "",
       });
       await nextTick();
     };
@@ -292,7 +321,7 @@ export const useUrlReader = () => {
     }
 
     const route = router.currentRoute.value;
-    if ('url' in route.query || 'text' in route.query) {
+    if ("url" in route.query || "text" in route.query) {
       const nextQuery = { ...route.query } as Record<string, any>;
       delete nextQuery.url;
       delete nextQuery.text;
@@ -312,7 +341,9 @@ export const useUrlReader = () => {
     isReaderLoading,
     isReaderModeActive,
     shouldShowPrompt,
-    showPageTooLargeError,
+    showErrorModal,
+    errorModalTitle,
+    errorModalBody,
     hasReaderContent,
     isSuccessBackground,
     title,
@@ -321,6 +352,6 @@ export const useUrlReader = () => {
     switchToReaderMode,
     exitReaderMode,
     dismissPrompt,
-    dismissPageTooLargeError,
+    dismissErrorModal,
   };
 };

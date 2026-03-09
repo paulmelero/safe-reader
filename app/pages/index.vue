@@ -97,10 +97,12 @@
       @confirm="switchToReaderMode"
     />
 
-    <!-- Page Too Large Modal -->
-    <PageTooLargeModal
-      :show="showPageTooLargeError"
-      @close="dismissPageTooLargeError"
+    <!-- Error Modal -->
+    <ErrorModal
+      :show="showErrorModal"
+      :title="errorModalTitle"
+      :body="errorModalBody"
+      @close="dismissErrorModal"
     />
   </main>
 </template>
@@ -127,8 +129,10 @@ const {
   articleData,
   dismissPrompt,
   switchToReaderMode,
-  showPageTooLargeError,
-  dismissPageTooLargeError,
+  showErrorModal,
+  errorModalTitle,
+  errorModalBody,
+  dismissErrorModal,
 } = useUrlReader();
 
 useHead({
