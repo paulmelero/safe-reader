@@ -6,16 +6,16 @@
     }"
   >
     <!-- Error Message -->
-    <div v-if="error" class="mb-8 p-4 bg-red-100 text-red-700 rounded-lg">
+    <div v-if="error" class="mb-8 p-4 bg-error/20 text-error rounded-lg">
       {{ error }}
     </div>
 
     <!-- Loading State -->
     <div
       v-if="isLoading"
-      class="mb-8 p-4 bg-gray-100 text-gray-700 rounded-lg"
+      class="mb-8 p-4 bg-base-200 text-base-content rounded-lg"
     >
-      {{ $t('loading') }}
+      {{ $t("loading") }}
     </div>
 
     <div
@@ -23,11 +23,11 @@
       class="grow flex flex-col items-center justify-center text-center"
     >
       <div class="w-full max-w-2xl mx-auto space-y-6">
-        <h2 class="text-xl md:text-2xl font-semibold text-gray-700">
-          {{ $t('heroTitle') }}
+        <h2 class="text-xl md:text-2xl font-semibold text-base-content">
+          {{ $t("heroTitle") }}
         </h2>
-        <p class="text-gray-500">
-          {{ $t('heroSubtitle') }}
+        <p class="text-base-content/70">
+          {{ $t("heroSubtitle") }}
         </p>
         <div class="w-full" style="view-transition-name: search-form">
           <SearchForm />
@@ -47,18 +47,18 @@
 
       <div
         v-if="currentUrl"
-        class="bg-white rounded-lg shadow-lg overflow-hidden h-full grow flex flex-col"
+        class="bg-base-100 rounded-lg shadow-lg overflow-hidden h-full grow flex flex-col"
       >
         <!-- Reader Mode View -->
         <div
           v-if="hasReaderContent"
-          class="container p-4 md:p-8 max-w-none prose lg:prose-xl mx-auto overflow-auto bg-white"
+          class="container p-4 md:p-8 max-w-none prose dark:prose-invert lg:prose-xl mx-auto overflow-auto bg-base-100"
         >
           <div class="mb-6 border-b pb-4">
             <h1 v-if="articleData.title" class="mb-2 text-3xl font-bold">
               {{ articleData.title }}
             </h1>
-            <div class="text-sm text-gray-500 flex flex-wrap gap-4">
+            <div class="text-sm text-base-content/60 flex flex-wrap gap-4">
               <span v-if="articleData.byline">By {{ articleData.byline }}</span>
               <span v-if="articleData.siteName"
                 >from {{ articleData.siteName }}</span
@@ -67,7 +67,7 @@
                 :href="currentUrl"
                 target="_blank"
                 rel="noopener"
-                class="text-blue-600 hover:underline"
+                class="text-primary hover:underline"
                 >Original Link</a
               >
             </div>
@@ -109,10 +109,10 @@
 </template>
 
 <script setup>
-import { useUrlReader } from '~/composables/useUrlReader';
+import { useUrlReader } from "~/composables/useUrlReader";
 
 definePageMeta({
-  title: 'IndexPage',
+  title: "IndexPage",
 });
 
 const { $t, $getLocale } = useI18n();
@@ -135,14 +135,14 @@ const {
 } = useUrlReader();
 
 useHead({
-  title: () => title.value || '',
+  title: () => title.value || "",
   htmlAttrs: {
     lang: $getLocale(),
   },
 });
 
 const successBackground =
-  'before:absolute before:inset-0 before:z-[-1] before:opacity-[.3] before:bg-[repeating-linear-gradient(45deg,_#3b82f6_25%,_transparent_25%,_transparent_75%,_#3b82f6_75%,_#3b82f6),_repeating-linear-gradient(45deg,_#3b82f6_25%,_#f3f4f6_25%,_#f3f4f6_75%,_#3b82f6_75%,_#3b82f6)] before:[background-position:0_0,_10px_10px] before:[background-size:20px_20px]';
+  "before:absolute before:inset-0 before:z-[-1] before:opacity-[.3] before:bg-[repeating-linear-gradient(45deg,_#3b82f6_25%,_transparent_25%,_transparent_75%,_#3b82f6_75%,_#3b82f6),_repeating-linear-gradient(45deg,_#3b82f6_25%,_#f3f4f6_25%,_#f3f4f6_75%,_#3b82f6_75%,_#3b82f6)] before:[background-position:0_0,_10px_10px] before:[background-size:20px_20px]";
 
 // Handle URL params (for both navigation and PWA share target)
 onMounted(() => {

@@ -1,13 +1,13 @@
 <template>
-  <article v-if="doc" class="prose flex flex-col gap-6">
-    <header class="flex flex-col gap-2 border-b border-gray-200 pb-4">
-      <p v-if="formattedDate" class="text-sm text-gray-500">
+  <article v-if="doc" class="prose dark:prose-invert flex flex-col gap-6">
+    <header class="flex flex-col gap-2 border-b border-base-300 pb-4">
+      <p v-if="formattedDate" class="text-sm text-base-content/60">
         {{ formattedDate }}
       </p>
-      <h1 class="text-3xl font-semibold text-gray-800">
+      <h1 class="text-3xl font-semibold text-base-content">
         {{ doc.title }}
       </h1>
-      <p v-if="doc.description" class="text-gray-600">
+      <p v-if="doc.description" class="text-base-content/70">
         {{ doc.description }}
       </p>
     </header>
@@ -19,16 +19,16 @@
     </ContentRenderer>
   </article>
 
-  <p v-else-if="pending" class="text-center text-gray-500">
+  <p v-else-if="pending" class="text-center text-base-content/60">
     {{ loadingMessage }}
   </p>
 
   <div
     v-else
-    class="flex flex-col items-center gap-4 text-center text-gray-600"
+    class="flex flex-col items-center gap-4 text-center text-base-content/70"
   >
     <p>{{ notFoundMessage }}</p>
-    <NuxtLink :to="localePath('/blog')" class="text-blue-600 hover:underline">
+    <NuxtLink :to="localePath('/blog')" class="text-primary hover:underline">
       {{ backToBlogLabel }}
     </NuxtLink>
   </div>

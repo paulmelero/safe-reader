@@ -1,7 +1,7 @@
 <template>
-  <article v-if="doc" class="prose flex flex-col gap-6">
-    <header class="flex flex-col gap-2 border-b border-gray-200 pb-4">
-      <h1 class="text-3xl font-semibold text-gray-800">
+  <article v-if="doc" class="prose dark:prose-invert flex flex-col gap-6">
+    <header class="flex flex-col gap-2 border-b border-base-300 pb-4">
+      <h1 class="text-3xl font-semibold text-base-content">
         {{ doc.title }}
       </h1>
     </header>
@@ -13,40 +13,40 @@
     </ContentRenderer>
   </article>
 
-  <p v-else-if="pending" class="text-center text-gray-500">
+  <p v-else-if="pending" class="text-center text-base-content/60">
     {{ loadingMessage }}
   </p>
 
-  <p v-else class="text-center text-gray-500">
+  <p v-else class="text-center text-base-content/60">
     {{ notFoundMessage }}
   </p>
 </template>
 
 <script setup>
-import { useNuxtApp } from '#imports';
+import { useNuxtApp } from "#imports";
 
-import { computed } from 'vue';
+import { computed } from "vue";
 
 const { $getLocale, $t } = useNuxtApp();
 const locale = computed(() => $getLocale());
 
 definePageMeta({
-  title: 'about',
-  layout: 'article',
+  title: "about",
+  layout: "article",
 });
 
-const loadingMessage = computed(() => $t('loading', 'Loading...'));
-const notFoundMessage = computed(() => $t('blog.notFound', 'Page not found.'));
+const loadingMessage = computed(() => $t("loading", "Loading..."));
+const notFoundMessage = computed(() => $t("blog.notFound", "Page not found."));
 
 const route = useRoute();
-const slug = computed(() => String(route.path.split('/').pop() || ''));
+const slug = computed(() => String(route.path.split("/").pop() || ""));
 
 const { data: doc, pending } = await useAsyncData(
   () => `page-about-${locale.value}-${slug.value}`,
   () =>
-    queryCollection('pages')
-      .where('slug', '=', slug.value)
-      .where('_locale', '=', locale.value)
+    queryCollection("pages")
+      .where("slug", "=", slug.value)
+      .where("_locale", "=", locale.value)
       .first(),
   {
     watch: [locale],
@@ -54,6 +54,6 @@ const { data: doc, pending } = await useAsyncData(
 );
 
 useHead({
-  title: () => doc.value?.title || $t('navAbout', 'About'),
+  title: () => doc.value?.title || $t("navAbout", "About"),
 });
 </script>

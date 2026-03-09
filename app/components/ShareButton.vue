@@ -1,12 +1,12 @@
 <template>
   <button
     v-if="canShare"
-    class="fixed bottom-16 right-6 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-primary text-white shadow-lg transition hover:bg-primaryHover focus:outline-none focus:ring-2 focus:ring-primaryHover"
+    class="fixed bottom-16 right-6 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-primary text-primary-content shadow-lg transition hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary"
     type="button"
     :aria-label="$t('shareButton')"
     @click="shareUrl"
   >
-    <span class="sr-only">{{ $t('shareButton') }}</span>
+    <span class="sr-only">{{ $t("shareButton") }}</span>
     <svg
       aria-hidden="true"
       class="h-6 w-6"
@@ -22,8 +22,8 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue';
-import { useUrlReader } from '~/composables/useUrlReader';
+import { computed, onMounted, ref } from "vue";
+import { useUrlReader } from "~/composables/useUrlReader";
 
 const { $t } = useI18n();
 const { currentUrl, title } = useUrlReader();
@@ -31,7 +31,7 @@ const isShareSupported = ref(false);
 
 onMounted(() => {
   isShareSupported.value =
-    typeof navigator !== 'undefined' && typeof navigator.share === 'function';
+    typeof navigator !== "undefined" && typeof navigator.share === "function";
 });
 
 const config = useRuntimeConfig();
@@ -39,9 +39,9 @@ const config = useRuntimeConfig();
 const shareLink = computed(() => {
   try {
     const baseUrl = config.public.APP_URL || window.location.origin;
-    if (!baseUrl || !currentUrl.value) return '';
+    if (!baseUrl || !currentUrl.value) return "";
     const url = new URL(baseUrl);
-    url.searchParams.set('url', currentUrl.value);
+    url.searchParams.set("url", currentUrl.value);
     return url.toString();
   } catch (e) {
     return currentUrl.value;
@@ -55,8 +55,8 @@ const canShare = computed(
 const shareUrl = async () => {
   if (
     !canShare.value ||
-    typeof navigator === 'undefined' ||
-    typeof navigator.share !== 'function'
+    typeof navigator === "undefined" ||
+    typeof navigator.share !== "function"
   ) {
     return;
   }
@@ -69,14 +69,14 @@ const shareUrl = async () => {
   } catch (error) {
     if (
       error &&
-      typeof error === 'object' &&
-      'name' in error &&
-      (error as { name?: string }).name === 'AbortError'
+      typeof error === "object" &&
+      "name" in error &&
+      (error as { name?: string }).name === "AbortError"
     ) {
       return;
     }
 
-    console.error('Error sharing', error);
+    console.error("Error sharing", error);
   }
 };
 </script>

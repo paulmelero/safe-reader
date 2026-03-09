@@ -1,9 +1,9 @@
 <template>
-  <header class="bg-white shadow-sm">
+  <header class="bg-base-100 shadow-sm">
     <div class="px-4 gap-4 py-4 flex items-center justify-between max-w-full">
-      <NuxtLink :to="localePath('/')" @click.native="() => resetState()">
+      <NuxtLink :to="localePath('/')" @click="() => resetState()">
         <h1
-          class="hidden md:block md:text-2xl font-bold text-gray-800 text-nowrap"
+          class="hidden md:block md:text-2xl font-bold text-base-content text-nowrap"
         >
           <span class="text-primary">[SAFE]</span>&nbsp;Reader
         </h1>
@@ -33,8 +33,8 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
-import { useUrlReader } from '~/composables/useUrlReader';
+import { computed } from "vue";
+import { useUrlReader } from "~/composables/useUrlReader";
 
 const { $localePath } = useNuxtApp();
 const localePath = $localePath;

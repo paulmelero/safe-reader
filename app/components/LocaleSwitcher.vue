@@ -1,10 +1,10 @@
 <template>
-  <div class="flex gap-2">
+  <div class="flex gap-2 isolate">
     <button
       v-for="locale in locales"
       :key="locale.code"
       @click="switchLocale(locale.code)"
-      :aria-label="$t(locale.labelKey)"
+      :aria-label="$t(locale.labelKey) as string"
       :disabled="$getLocale() === locale.code"
       class="rounded-full p-2 transition-opacity"
       :class="{

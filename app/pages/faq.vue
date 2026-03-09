@@ -1,14 +1,14 @@
 <template>
   <article class="flex flex-col gap-6">
-    <h1 class="text-3xl font-semibold text-gray-800">
-      {{ $t('faq.title') }}
+    <h1 class="text-3xl font-semibold text-base-content">
+      {{ $t("faq.title") }}
     </h1>
     <dl class="flex flex-col gap-6">
       <div v-for="(item, index) in items" :key="index">
-        <dt class="text-lg font-medium text-gray-800 mb-1">
+        <dt class="text-lg font-medium text-base-content mb-1">
           {{ item.q }}
         </dt>
-        <dd class="text-gray-600">
+        <dd class="text-base-content/70">
           {{ item.a }}
         </dd>
       </div>
@@ -20,11 +20,11 @@
 const { $t } = useI18n();
 
 const faqKeys = [
-  { q: 'faq.q1', a: 'faq.a1' },
-  { q: 'faq.q2', a: 'faq.a2' },
-  { q: 'faq.q3', a: 'faq.a3' },
-  { q: 'faq.q4', a: 'faq.a4' },
-  { q: 'faq.q5', a: 'faq.a5' },
+  { q: "faq.q1", a: "faq.a1" },
+  { q: "faq.q2", a: "faq.a2" },
+  { q: "faq.q3", a: "faq.a3" },
+  { q: "faq.q4", a: "faq.a4" },
+  { q: "faq.q5", a: "faq.a5" },
 ];
 
 const items = computed(() =>
@@ -35,11 +35,11 @@ const items = computed(() =>
 );
 
 useHead({
-  title: () => $t('faq.title'),
+  title: () => $t("faq.title"),
 });
 
 definePageMeta({
-  title: 'FaqPage',
-  layout: 'article',
+  title: "FaqPage",
+  layout: "article",
 });
 </script>
