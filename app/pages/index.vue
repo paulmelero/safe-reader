@@ -1,22 +1,19 @@
 <template>
   <main
-    class="px-2 pb-4 pt-2 md:px-4 md:pb-8 md:pt-4 grow flex flex-col gap-6 relative z-[0]"
+    class="px-2 pb-4 pt-2 md:px-4 md:pb-6 md:pt-4 grow flex flex-col gap-4 relative z-[0]"
     :class="{
       [successBackground]: isSuccessBackground,
     }"
   >
     <!-- Error Message -->
-    <div v-if="error" class="mb-8 p-4 bg-error/20 text-error rounded-lg">
-      {{ error }}
-    </div>
+    <ErrorAlert v-if="error" :error />
 
     <!-- Loading State -->
-    <div
+    <progress
       v-if="isLoading"
-      class="mb-8 p-4 bg-base-200 text-base-content rounded-lg"
-    >
-      {{ $t("loading") }}
-    </div>
+      :aria-label="$t('loading')"
+      class="progress w-full"
+    ></progress>
 
     <div
       v-if="!currentUrl"

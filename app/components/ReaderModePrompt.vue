@@ -1,7 +1,7 @@
 <template>
   <ClientOnly>
     <Teleport to="body">
-      <dialog class="modal modal-bottom" :class="{ 'modal-open': isOpen }">
+      <dialog class="modal" :class="{ 'modal-open': isOpen }">
         <div class="modal-box">
           <button
             @click="close"

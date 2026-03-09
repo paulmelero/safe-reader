@@ -1,22 +1,26 @@
 <template>
-  <dialog class="modal modal-bottom" :class="{ 'modal-open': isOpen }">
-    <div class="modal-box">
-      <button
-        @click="close"
-        class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
-        :aria-label="$t('closeButton')"
-      >
-        ✕
-      </button>
-      <h3 class="font-semibold text-base-content text-base mb-1">
-        {{ $t("pageTooLargeTitle") }}
-      </h3>
-      <p class="text-sm text-base-content/70 leading-snug">
-        {{ $t("pageTooLargeBody") }}
-      </p>
-    </div>
-    <div class="modal-backdrop" @click="close"></div>
-  </dialog>
+  <ClientOnly>
+    <Teleport to="body">
+      <dialog class="modal" :class="{ 'modal-open': isOpen }">
+        <div class="modal-box">
+          <button
+            @click="close"
+            class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
+            :aria-label="$t('closeButton') as string"
+          >
+            ✕
+          </button>
+          <h3 class="font-semibold text-base-content text-base mb-1">
+            {{ $t("pageTooLargeTitle") }}
+          </h3>
+          <p class="text-sm text-base-content/70 leading-snug">
+            {{ $t("pageTooLargeBody") }}
+          </p>
+        </div>
+        <div class="modal-backdrop" @click="close"></div>
+      </dialog>
+    </Teleport>
+  </ClientOnly>
 </template>
 
 <script setup lang="ts">
