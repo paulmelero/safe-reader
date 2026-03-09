@@ -6,7 +6,7 @@
       @click="switchLocale(locale.code)"
       :aria-label="$t(locale.labelKey) as string"
       :disabled="$getLocale() === locale.code"
-      class="rounded-full p-2 transition-opacity"
+      class="btn btn-ghost px-4 py-2 transition-opacity"
       :class="{
         'cursor-default opacity-50': $getLocale() === locale.code,
         'hover:opacity-80': $getLocale() !== locale.code,

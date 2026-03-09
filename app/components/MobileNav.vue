@@ -66,20 +66,28 @@
 
           <!-- Nav links -->
           <ul class="flex flex-col gap-1 px-4">
-            <li v-for="link in links" :key="link.to">
+            <li v-for="link in links" :key="typeof link.to === 'string' ? link.to : link.to.name">
               <NuxtLink
                 :to="localePath(link.to)"
                 class="block rounded-md px-3 py-2 text-base-content hover:bg-base-200 hover:text-base-content"
-                @click="() => { link.onNavClick?.(); close(); }"
+                @click="
+                  () => {
+                    link.onNavClick?.();
+                    close();
+                  }
+                "
               >
                 {{ $t(link.labelKey) }}
               </NuxtLink>
             </li>
           </ul>
 
-          <!-- Locale switcher at bottom -->
-          <div class="mt-auto border-t border-base-300 p-4">
+          <!-- Locale and theme switchers at bottom -->
+          <div
+            class="mt-auto border-t border-base-300 p-4 flex justify-between items-center gap-4"
+          >
             <LocaleSwitcher />
+            <ThemeSwitcher />
           </div>
         </nav>
       </Transition>

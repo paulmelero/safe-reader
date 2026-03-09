@@ -10,7 +10,9 @@
     <nav class="hidden md:block">
       <ul class="flex space-x-4 items-center">
         <li>
-          <NuxtLink :to="localePath('/')" @click="() => resetState()">Home</NuxtLink>
+          <NuxtLink :to="localePath('/')" @click="() => resetState()"
+            >Home</NuxtLink
+          >
         </li>
         <li>
           <NuxtLink :to="localePath('/blog')">Blog</NuxtLink>
