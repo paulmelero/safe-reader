@@ -21,7 +21,7 @@
       value="dark"
       :checked="isDark"
       @change="onThemeChange"
-      class="toggle theme-controller"
+      class="toggle"
     />
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -40,21 +40,30 @@
 </template>
 
 <script setup lang="ts">
-const isDark = ref(false);
+// useState keeps both ThemeSwitcher instances (Footer + MobileNav) in sync.
+const isDark = useState('theme-is-dark', () => false);
 
 onMounted(() => {
-  const saved = localStorage.getItem("theme");
-  const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-  const theme = saved ?? (prefersDark ? "dark" : "light");
-  isDark.value = theme === "dark";
-  document.documentElement.setAttribute("data-theme", theme);
+  // The blocking head script already applied the theme from localStorage.
+  // Just read what it set so the checkbox matches without a second round-trip.
+  const current = document.documentElement.getAttribute('data-theme');
+  if (current) {
+    isDark.value = current === 'dark';
+  } else {
+    // Fallback: no head script ran (e.g. SSG/static export edge case)
+    const saved = localStorage.getItem('theme');
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const theme = saved ?? (prefersDark ? 'dark' : 'light');
+    isDark.value = theme === 'dark';
+    document.documentElement.setAttribute('data-theme', theme);
+  }
 });
 
 const onThemeChange = (event: Event) => {
   const target = event.target as HTMLInputElement;
-  const theme = target.checked ? "dark" : "light";
+  const theme = target.checked ? 'dark' : 'light';
   isDark.value = target.checked;
-  document.documentElement.setAttribute("data-theme", theme);
-  localStorage.setItem("theme", theme);
+  document.documentElement.setAttribute('data-theme', theme);
+  localStorage.setItem('theme', theme);
 };
 </script>

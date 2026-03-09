@@ -2,6 +2,18 @@ import { fileURLToPath } from 'node:url';
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
+  app: {
+    head: {
+      // Blocking inline script: applies saved theme from localStorage before
+      // hydration to prevent flash and avoid hydration mismatch.
+      script: [
+        {
+          innerHTML: `(function(){try{var t=localStorage.getItem('theme')||(window.matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light');document.documentElement.setAttribute('data-theme',t);}catch(e){}})();`,
+          tagPriority: 'critical',
+        },
+      ],
+    },
+  },
   compatibilityDate: '2025-01-01',
   devtools: { enabled: true },
 
