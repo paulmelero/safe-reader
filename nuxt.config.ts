@@ -1,4 +1,4 @@
-import { fileURLToPath } from 'node:url';
+import { fileURLToPath } from "node:url";
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
@@ -9,12 +9,12 @@ export default defineNuxtConfig({
       script: [
         {
           innerHTML: `(function(){try{var t=localStorage.getItem('theme')||(window.matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light');document.documentElement.setAttribute('data-theme',t);}catch(e){}})();`,
-          tagPriority: 'critical',
+          tagPriority: "critical",
         },
       ],
     },
   },
-  compatibilityDate: '2025-01-01',
+  compatibilityDate: "2025-01-01",
   devtools: { enabled: true },
 
   devServer: {
@@ -26,13 +26,13 @@ export default defineNuxtConfig({
   },
 
   nitro: {
-    preset: 'cloudflare_module',
+    preset: "cloudflare_module",
     prerender: {
       autoSubfolderIndex: false,
     },
     alias: {
       canvas: fileURLToPath(
-        new URL('./server/mocks/canvas.ts', import.meta.url),
+        new URL("./server/mocks/canvas.ts", import.meta.url),
       ),
     },
     cloudflare: {
@@ -44,85 +44,85 @@ export default defineNuxtConfig({
 
   runtimeConfig: {
     public: {
-      APP_NAME: 'SAFEReader',
-      APP_URL: '',
+      APP_NAME: "SAFEReader",
+      APP_URL: "",
     },
   },
 
   modules: [
-    '@vite-pwa/nuxt',
-    '@nuxtjs/tailwindcss',
-    '@nuxt/content',
-    'nuxt-i18n-micro',
+    "@vite-pwa/nuxt",
+    "@nuxtjs/tailwindcss",
+    "@nuxt/content",
+    "nuxt-i18n-micro",
   ],
 
   pwa: {
-    registerType: 'autoUpdate',
+    registerType: "autoUpdate",
     manifest: {
-      name: '[SAFE]Reader',
-      short_name: '[S]R',
+      name: "[SAFE]Reader",
+      short_name: "[S]R",
       description:
-        'A secure way to view shared URLs (in a sandboxed iframe with no JS).',
-      theme_color: '#ffffff',
-      background_color: '#ffffff',
-      display: 'standalone',
-      start_url: '/',
-      scope: '/',
+        "A secure way to view shared URLs (in a sandboxed iframe with no JS).",
+      theme_color: "#ffffff",
+      background_color: "#ffffff",
+      display: "standalone",
+      start_url: "/",
+      scope: "/",
       icons: [
         {
-          src: 'safereader-192x192.png', // Removed leading slash for relative path
-          sizes: '192x192',
-          type: 'image/png',
+          src: "safereader-192x192.png", // Removed leading slash for relative path
+          sizes: "192x192",
+          type: "image/png",
         },
         {
-          src: 'safereader-512x512.jpg',
-          sizes: '512x512',
-          type: 'image/jpeg',
+          src: "safereader-512x512.jpg",
+          sizes: "512x512",
+          type: "image/jpeg",
         },
       ],
       share_target: {
-        action: '/',
-        enctype: 'application/x-www-form-urlencoded',
-        method: 'GET',
+        action: "/",
+        enctype: "application/x-www-form-urlencoded",
+        method: "GET",
         params: {
-          text: 'text',
-          url: 'url',
+          text: "text",
+          url: "url",
         },
       },
     },
     workbox: {
-      navigateFallback: '/',
-      globPatterns: ['**/*.{js,css,html,png,svg,ico}'],
+      navigateFallback: "/",
+      globPatterns: ["**/*.{js,css,html,png,svg,ico}"],
     },
     devOptions: {
       enabled: true,
-      type: 'module',
+      type: "module",
     },
   },
 
   i18n: {
     locales: [
-      { code: 'en', name: 'English', iso: 'en-US' },
-      { code: 'es', name: 'Español', iso: 'es-ES' },
+      { code: "en", name: "English", iso: "en-US" },
+      { code: "es", name: "Español", iso: "es-ES" },
     ],
-    defaultLocale: 'es',
-    translationDir: 'app/locales',
+    defaultLocale: "es",
+    translationDir: "app/locales",
     globalLocaleRoutes: {
-      '/about': {
-        en: '/about',
-        es: '/acerca-de',
+      "/about": {
+        en: "/about",
+        es: "/acerca-de",
       },
-      '/terms': {
-        en: '/terms',
-        es: '/terminos',
+      "/terms": {
+        en: "/terms",
+        es: "/terminos",
       },
     },
   },
 
   content: {
     database: {
-      bindingName: 'D1',
-      type: 'd1',
+      bindingName: "D1",
+      type: "d1",
     },
   },
 });
